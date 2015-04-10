@@ -48,9 +48,29 @@ ApplicationConfiguration.registerModule('articles');
 
 'use strict';
 
+// Use applicaion configuration module to register a new module
+ApplicationConfiguration.registerModule('categories');
+'use strict';
+
+// Use applicaion configuration module to register a new module
+ApplicationConfiguration.registerModule('classifieds');
+'use strict';
+
 // Use Application configuration module to register a new module
 ApplicationConfiguration.registerModule('core');
 
+'use strict';
+
+// Use applicaion configuration module to register a new module
+ApplicationConfiguration.registerModule('families');
+'use strict';
+
+// Use applicaion configuration module to register a new module
+ApplicationConfiguration.registerModule('instrumenttypes');
+'use strict';
+
+// Use applicaion configuration module to register a new module
+ApplicationConfiguration.registerModule('subcategories');
 'use strict';
 
 // Use Application configuration module to register a new module
@@ -166,6 +186,236 @@ angular.module('articles').factory('Articles', ['$resource',
 	function($resource) {
 		return $resource('articles/:articleId', {
 			articleId: '@_id'
+		}, {
+			update: {
+				method: 'PUT'
+			}
+		});
+	}
+]);
+'use strict';
+
+// Configuring the Articles module
+angular.module('categories').run(['Menus',
+	function(Menus) {
+		// Set top bar menu items
+		Menus.addMenuItem('topbar', 'Categories', 'categories', 'dropdown', '/categories(/create)?');
+		Menus.addSubMenuItem('topbar', 'categories', 'List Categories', 'categories');
+		Menus.addSubMenuItem('topbar', 'categories', 'New Category', 'categories/create');
+	}
+]);
+'use strict';
+
+//Setting up route
+angular.module('categories').config(['$stateProvider',
+	function($stateProvider) {
+		// Categories state routing
+		$stateProvider.
+		state('listCategories', {
+			url: '/categories',
+			templateUrl: 'modules/categories/views/list-categories.client.view.html'
+		}).
+		state('createCategory', {
+			url: '/categories/create',
+			templateUrl: 'modules/categories/views/create-category.client.view.html'
+		}).
+		state('viewCategory', {
+			url: '/categories/:categoryId',
+			templateUrl: 'modules/categories/views/view-category.client.view.html'
+		}).
+		state('editCategory', {
+			url: '/categories/:categoryId/edit',
+			templateUrl: 'modules/categories/views/edit-category.client.view.html'
+		});
+	}
+]);
+'use strict';
+
+// Categories controller
+angular.module('categories').controller('CategoriesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Categories',
+	function($scope, $stateParams, $location, Authentication, Categories) {
+		$scope.authentication = Authentication;
+
+		// Create new Category
+		$scope.create = function() {
+			// Create new Category object
+			var category = new Categories ({
+				name: this.name
+			});
+
+			// Redirect after save
+			category.$save(function(response) {
+				$location.path('categories/' + response._id);
+
+				// Clear form fields
+				$scope.name = '';
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Remove existing Category
+		$scope.remove = function(category) {
+			if ( category ) { 
+				category.$remove();
+
+				for (var i in $scope.categories) {
+					if ($scope.categories [i] === category) {
+						$scope.categories.splice(i, 1);
+					}
+				}
+			} else {
+				$scope.category.$remove(function() {
+					$location.path('categories');
+				});
+			}
+		};
+
+		// Update existing Category
+		$scope.update = function() {
+			var category = $scope.category;
+
+			category.$update(function() {
+				$location.path('categories/' + category._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Find a list of Categories
+		$scope.find = function() {
+			$scope.categories = Categories.query();
+		};
+
+		// Find existing Category
+		$scope.findOne = function() {
+			$scope.category = Categories.get({ 
+				categoryId: $stateParams.categoryId
+			});
+		};
+	}
+]);
+'use strict';
+
+//Categories service used to communicate Categories REST endpoints
+angular.module('categories').factory('Categories', ['$resource',
+	function($resource) {
+		return $resource('categories/:categoryId', { categoryId: '@_id'
+		}, {
+			update: {
+				method: 'PUT'
+			}
+		});
+	}
+]);
+'use strict';
+
+// Configuring the Articles module
+angular.module('classifieds').run(['Menus',
+	function(Menus) {
+		// Set top bar menu items
+		Menus.addMenuItem('topbar', 'Classifieds', 'classifieds', 'dropdown', '/classifieds(/create)?');
+		Menus.addSubMenuItem('topbar', 'classifieds', 'List Classifieds', 'classifieds');
+		Menus.addSubMenuItem('topbar', 'classifieds', 'New Classified', 'classifieds/create');
+	}
+]);
+'use strict';
+
+//Setting up route
+angular.module('classifieds').config(['$stateProvider',
+	function($stateProvider) {
+		// Classifieds state routing
+		$stateProvider.
+		state('listClassifieds', {
+			url: '/classifieds',
+			templateUrl: 'modules/classifieds/views/list-classifieds.client.view.html'
+		}).
+		state('createClassified', {
+			url: '/classifieds/create',
+			templateUrl: 'modules/classifieds/views/create-classified.client.view.html'
+		}).
+		state('viewClassified', {
+			url: '/classifieds/:classifiedId',
+			templateUrl: 'modules/classifieds/views/view-classified.client.view.html'
+		}).
+		state('editClassified', {
+			url: '/classifieds/:classifiedId/edit',
+			templateUrl: 'modules/classifieds/views/edit-classified.client.view.html'
+		});
+	}
+]);
+'use strict';
+
+// Classifieds controller
+angular.module('classifieds').controller('ClassifiedsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Classifieds',
+	function($scope, $stateParams, $location, Authentication, Classifieds) {
+		$scope.authentication = Authentication;
+
+		// Create new Classified
+		$scope.create = function() {
+			// Create new Classified object
+			var classified = new Classifieds ({
+				name: this.name
+			});
+
+			// Redirect after save
+			classified.$save(function(response) {
+				$location.path('classifieds/' + response._id);
+
+				// Clear form fields
+				$scope.name = '';
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Remove existing Classified
+		$scope.remove = function(classified) {
+			if ( classified ) { 
+				classified.$remove();
+
+				for (var i in $scope.classifieds) {
+					if ($scope.classifieds [i] === classified) {
+						$scope.classifieds.splice(i, 1);
+					}
+				}
+			} else {
+				$scope.classified.$remove(function() {
+					$location.path('classifieds');
+				});
+			}
+		};
+
+		// Update existing Classified
+		$scope.update = function() {
+			var classified = $scope.classified;
+
+			classified.$update(function() {
+				$location.path('classifieds/' + classified._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Find a list of Classifieds
+		$scope.find = function() {
+			$scope.classifieds = Classifieds.query();
+		};
+
+		// Find existing Classified
+		$scope.findOne = function() {
+			$scope.classified = Classifieds.get({ 
+				classifiedId: $stateParams.classifiedId
+			});
+		};
+	}
+]);
+'use strict';
+
+//Classifieds service used to communicate Classifieds REST endpoints
+angular.module('classifieds').factory('Classifieds', ['$resource',
+	function($resource) {
+		return $resource('classifieds/:classifiedId', { classifiedId: '@_id'
 		}, {
 			update: {
 				method: 'PUT'
@@ -380,6 +630,351 @@ angular.module('core').service('Menus', [
 
 		//Adding the topbar menu
 		this.addMenu('topbar');
+	}
+]);
+'use strict';
+
+// Configuring the Articles module
+angular.module('families').run(['Menus',
+	function(Menus) {
+		// Set top bar menu items
+		Menus.addMenuItem('topbar', 'Families', 'families', 'dropdown', '/families(/create)?');
+		Menus.addSubMenuItem('topbar', 'families', 'List Families', 'families');
+		Menus.addSubMenuItem('topbar', 'families', 'New Family', 'families/create');
+	}
+]);
+'use strict';
+
+//Setting up route
+angular.module('families').config(['$stateProvider',
+	function($stateProvider) {
+		// Families state routing
+		$stateProvider.
+		state('listFamilies', {
+			url: '/families',
+			templateUrl: 'modules/families/views/list-families.client.view.html'
+		}).
+		state('createFamily', {
+			url: '/families/create',
+			templateUrl: 'modules/families/views/create-family.client.view.html'
+		}).
+		state('viewFamily', {
+			url: '/families/:familyId',
+			templateUrl: 'modules/families/views/view-family.client.view.html'
+		}).
+		state('editFamily', {
+			url: '/families/:familyId/edit',
+			templateUrl: 'modules/families/views/edit-family.client.view.html'
+		});
+	}
+]);
+'use strict';
+
+// Families controller
+angular.module('families').controller('FamiliesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Families',
+	function($scope, $stateParams, $location, Authentication, Families) {
+		$scope.authentication = Authentication;
+
+		// Create new Family
+		$scope.create = function() {
+			// Create new Family object
+			var family = new Families ({
+				name: this.name
+			});
+
+			// Redirect after save
+			family.$save(function(response) {
+				$location.path('families/' + response._id);
+
+				// Clear form fields
+				$scope.name = '';
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Remove existing Family
+		$scope.remove = function(family) {
+			if ( family ) { 
+				family.$remove();
+
+				for (var i in $scope.families) {
+					if ($scope.families [i] === family) {
+						$scope.families.splice(i, 1);
+					}
+				}
+			} else {
+				$scope.family.$remove(function() {
+					$location.path('families');
+				});
+			}
+		};
+
+		// Update existing Family
+		$scope.update = function() {
+			var family = $scope.family;
+
+			family.$update(function() {
+				$location.path('families/' + family._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Find a list of Families
+		$scope.find = function() {
+			$scope.families = Families.query();
+		};
+
+		// Find existing Family
+		$scope.findOne = function() {
+			$scope.family = Families.get({ 
+				familyId: $stateParams.familyId
+			});
+		};
+	}
+]);
+'use strict';
+
+//Families service used to communicate Families REST endpoints
+angular.module('families').factory('Families', ['$resource',
+	function($resource) {
+		return $resource('families/:familyId', { familyId: '@_id'
+		}, {
+			update: {
+				method: 'PUT'
+			}
+		});
+	}
+]);
+'use strict';
+
+// Configuring the Articles module
+angular.module('instrumenttypes').run(['Menus',
+	function(Menus) {
+		// Set top bar menu items
+		Menus.addMenuItem('topbar', 'Instrumenttypes', 'instrumenttypes', 'dropdown', '/instrumenttypes(/create)?');
+		Menus.addSubMenuItem('topbar', 'instrumenttypes', 'List Instrumenttypes', 'instrumenttypes');
+		Menus.addSubMenuItem('topbar', 'instrumenttypes', 'New Instrumenttype', 'instrumenttypes/create');
+	}
+]);
+'use strict';
+
+//Setting up route
+angular.module('instrumenttypes').config(['$stateProvider',
+	function($stateProvider) {
+		// Instrumenttypes state routing
+		$stateProvider.
+		state('listInstrumenttypes', {
+			url: '/instrumenttypes',
+			templateUrl: 'modules/instrumenttypes/views/list-instrumenttypes.client.view.html'
+		}).
+		state('createInstrumenttype', {
+			url: '/instrumenttypes/create',
+			templateUrl: 'modules/instrumenttypes/views/create-instrumenttype.client.view.html'
+		}).
+		state('viewInstrumenttype', {
+			url: '/instrumenttypes/:instrumenttypeId',
+			templateUrl: 'modules/instrumenttypes/views/view-instrumenttype.client.view.html'
+		}).
+		state('editInstrumenttype', {
+			url: '/instrumenttypes/:instrumenttypeId/edit',
+			templateUrl: 'modules/instrumenttypes/views/edit-instrumenttype.client.view.html'
+		});
+	}
+]);
+'use strict';
+
+// Instrumenttypes controller
+angular.module('instrumenttypes').controller('InstrumenttypesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Instrumenttypes',
+	function($scope, $stateParams, $location, Authentication, Instrumenttypes) {
+		$scope.authentication = Authentication;
+
+		// Create new Instrumenttype
+		$scope.create = function() {
+			// Create new Instrumenttype object
+			var instrumenttype = new Instrumenttypes ({
+				name: this.name
+			});
+
+			// Redirect after save
+			instrumenttype.$save(function(response) {
+				$location.path('instrumenttypes/' + response._id);
+
+				// Clear form fields
+				$scope.name = '';
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Remove existing Instrumenttype
+		$scope.remove = function(instrumenttype) {
+			if ( instrumenttype ) { 
+				instrumenttype.$remove();
+
+				for (var i in $scope.instrumenttypes) {
+					if ($scope.instrumenttypes [i] === instrumenttype) {
+						$scope.instrumenttypes.splice(i, 1);
+					}
+				}
+			} else {
+				$scope.instrumenttype.$remove(function() {
+					$location.path('instrumenttypes');
+				});
+			}
+		};
+
+		// Update existing Instrumenttype
+		$scope.update = function() {
+			var instrumenttype = $scope.instrumenttype;
+
+			instrumenttype.$update(function() {
+				$location.path('instrumenttypes/' + instrumenttype._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Find a list of Instrumenttypes
+		$scope.find = function() {
+			$scope.instrumenttypes = Instrumenttypes.query();
+		};
+
+		// Find existing Instrumenttype
+		$scope.findOne = function() {
+			$scope.instrumenttype = Instrumenttypes.get({ 
+				instrumenttypeId: $stateParams.instrumenttypeId
+			});
+		};
+	}
+]);
+'use strict';
+
+//Instrumenttypes service used to communicate Instrumenttypes REST endpoints
+angular.module('instrumenttypes').factory('Instrumenttypes', ['$resource',
+	function($resource) {
+		return $resource('instrumenttypes/:instrumenttypeId', { instrumenttypeId: '@_id'
+		}, {
+			update: {
+				method: 'PUT'
+			}
+		});
+	}
+]);
+'use strict';
+
+// Configuring the Articles module
+angular.module('subcategories').run(['Menus',
+	function(Menus) {
+		// Set top bar menu items
+		Menus.addMenuItem('topbar', 'Subcategories', 'subcategories', 'dropdown', '/subcategories(/create)?');
+		Menus.addSubMenuItem('topbar', 'subcategories', 'List Subcategories', 'subcategories');
+		Menus.addSubMenuItem('topbar', 'subcategories', 'New Subcategory', 'subcategories/create');
+	}
+]);
+'use strict';
+
+//Setting up route
+angular.module('subcategories').config(['$stateProvider',
+	function($stateProvider) {
+		// Subcategories state routing
+		$stateProvider.
+		state('listSubcategories', {
+			url: '/subcategories',
+			templateUrl: 'modules/subcategories/views/list-subcategories.client.view.html'
+		}).
+		state('createSubcategory', {
+			url: '/subcategories/create',
+			templateUrl: 'modules/subcategories/views/create-subcategory.client.view.html'
+		}).
+		state('viewSubcategory', {
+			url: '/subcategories/:subcategoryId',
+			templateUrl: 'modules/subcategories/views/view-subcategory.client.view.html'
+		}).
+		state('editSubcategory', {
+			url: '/subcategories/:subcategoryId/edit',
+			templateUrl: 'modules/subcategories/views/edit-subcategory.client.view.html'
+		});
+	}
+]);
+'use strict';
+
+// Subcategories controller
+angular.module('subcategories').controller('SubcategoriesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Subcategories',
+	function($scope, $stateParams, $location, Authentication, Subcategories) {
+		$scope.authentication = Authentication;
+
+		// Create new Subcategory
+		$scope.create = function() {
+			// Create new Subcategory object
+			var subcategory = new Subcategories ({
+				name: this.name
+			});
+
+			// Redirect after save
+			subcategory.$save(function(response) {
+				$location.path('subcategories/' + response._id);
+
+				// Clear form fields
+				$scope.name = '';
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Remove existing Subcategory
+		$scope.remove = function(subcategory) {
+			if ( subcategory ) { 
+				subcategory.$remove();
+
+				for (var i in $scope.subcategories) {
+					if ($scope.subcategories [i] === subcategory) {
+						$scope.subcategories.splice(i, 1);
+					}
+				}
+			} else {
+				$scope.subcategory.$remove(function() {
+					$location.path('subcategories');
+				});
+			}
+		};
+
+		// Update existing Subcategory
+		$scope.update = function() {
+			var subcategory = $scope.subcategory;
+
+			subcategory.$update(function() {
+				$location.path('subcategories/' + subcategory._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Find a list of Subcategories
+		$scope.find = function() {
+			$scope.subcategories = Subcategories.query();
+		};
+
+		// Find existing Subcategory
+		$scope.findOne = function() {
+			$scope.subcategory = Subcategories.get({ 
+				subcategoryId: $stateParams.subcategoryId
+			});
+		};
+	}
+]);
+'use strict';
+
+//Subcategories service used to communicate Subcategories REST endpoints
+angular.module('subcategories').factory('Subcategories', ['$resource',
+	function($resource) {
+		return $resource('subcategories/:subcategoryId', { subcategoryId: '@_id'
+		}, {
+			update: {
+				method: 'PUT'
+			}
+		});
 	}
 ]);
 'use strict';
