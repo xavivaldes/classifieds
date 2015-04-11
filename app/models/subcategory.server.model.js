@@ -16,6 +16,10 @@ var SubcategorySchema = new Schema({
 		required: 'Please fill Subcategory name',
 		trim: true
 	},
+	category: {
+		type: Schema.ObjectId,
+		ref: 'Category'
+	},
 	created: {
 		type: Date,
 		default: Date.now
