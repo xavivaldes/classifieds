@@ -18,7 +18,8 @@ var SubcategorySchema = new Schema({
 	},
 	category: {
 		type: Schema.ObjectId,
-		ref: 'Category'
+		ref: 'Category',
+		required: ''
 	},
 	created: {
 		type: Date,

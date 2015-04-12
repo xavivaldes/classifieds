@@ -1,15 +1,16 @@
 'use strict';
 
 // Subcategories controller
-angular.module('subcategories').controller('SubcategoriesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Subcategories',
-	function($scope, $stateParams, $location, Authentication, Subcategories) {
+angular.module('subcategories').controller('SubcategoriesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Subcategories', 'Categories',
+	function($scope, $stateParams, $location, Authentication, Subcategories, Categories) {
 		$scope.authentication = Authentication;
 
 		// Create new Subcategory
 		$scope.create = function() {
 			// Create new Subcategory object
 			var subcategory = new Subcategories ({
-				name: this.name
+				name: this.name,
+				category: this.category
 			});
 
 			// Redirect after save
@@ -25,7 +26,7 @@ angular.module('subcategories').controller('SubcategoriesController', ['$scope',
 
 		// Remove existing Subcategory
 		$scope.remove = function(subcategory) {
-			if ( subcategory ) { 
+			if ( subcategory ) {
 				subcategory.$remove();
 
 				for (var i in $scope.subcategories) {
@@ -56,11 +57,16 @@ angular.module('subcategories').controller('SubcategoriesController', ['$scope',
 			$scope.subcategories = Subcategories.query();
 		};
 
+		$scope.loadAdditionalInfo = function() {
+			$scope.categories = Categories.query();
+		}
+
 		// Find existing Subcategory
 		$scope.findOne = function() {
-			$scope.subcategory = Subcategories.get({ 
+			$scope.subcategory = Subcategories.get({
 				subcategoryId: $stateParams.subcategoryId
 			});
+			this.loadAdditionalInfo();
 		};
 	}
 ]);

@@ -72,8 +72,8 @@ exports.delete = function(req, res) {
 /**
  * List of Subcategories
  */
-exports.list = function(req, res) { 
-	Subcategory.find().sort('-created').populate('user', 'displayName').exec(function(err, subcategories) {
+exports.list = function(req, res) {
+	Subcategory.find().sort('-created').populate('user', 'displayName').populate('category', 'name').exec(function(err, subcategories) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -87,8 +87,8 @@ exports.list = function(req, res) {
 /**
  * Subcategory middleware
  */
-exports.subcategoryByID = function(req, res, next, id) { 
-	Subcategory.findById(id).populate('user', 'displayName').exec(function(err, subcategory) {
+exports.subcategoryByID = function(req, res, next, id) {
+	Subcategory.findById(id).populate('user', 'displayName').populate('category', 'name').exec(function(err, subcategory) {
 		if (err) return next(err);
 		if (! subcategory) return next(new Error('Failed to load Subcategory ' + id));
 		req.subcategory = subcategory ;

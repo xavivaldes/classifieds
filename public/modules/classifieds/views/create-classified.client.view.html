@@ -5,12 +5,48 @@
     <div class="col-md-12">
         <form class="form-horizontal" data-ng-submit="create()" novalidate>
             <fieldset>
-                <div class="form-group">
-                    <label class="control-label" for="name">Name</label>
-                    <div class="controls">
-                        <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
-                    </div>
-                </div>
+				<div class="form-group">
+					<label class="control-label" for="shortDescription">Descripción corta</label>
+					<div class="controls">
+						<input type="text" data-ng-model="shortDescription" id="shortDescription" class="form-control" placeholder="Descripción corta" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="longDescription">Descripción</label>
+					<div class="controls">
+						<input type="text" data-ng-model="longDescription" id="longDescription" class="form-control" placeholder="Name" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="price">Precio</label>
+					<div class="controls">
+						<input type="text" data-ng-model="price" id="price" class="form-control" placeholder="Name" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="category">Categoría</label>
+					<div class="controls">
+						<input type="text" data-ng-model="category" id="category" class="form-control" placeholder="Name" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="subcategory">Subcategoría</label>
+					<div class="controls">
+						<input type="text" data-ng-model="subcategory" id="subcategory" class="form-control" placeholder="Name" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="family">Familia</label>
+					<div class="controls">
+						<input type="text" data-ng-model="family" id="family" class="form-control" placeholder="Name" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="instrumentType">instrumentType</label>
+					<div class="controls">
+						<input type="text" data-ng-model="instrumentType" id="instrumentType" class="form-control" placeholder="Name" required>
+					</div>
+				</div>
                 <div class="form-group">
                     <input type="submit" class="btn btn-default">
                 </div>

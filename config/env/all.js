@@ -48,6 +48,7 @@ module.exports = {
 			],
 			js: [
 				'public/lib/angular/angular.js',
+				'public/lib/angular-i18n/angular-locale_es-es.js',
 				'public/lib/angular-resource/angular-resource.js',
 				'public/lib/angular-animate/angular-animate.js',
 				'public/lib/angular-ui-router/release/angular-ui-router.js',

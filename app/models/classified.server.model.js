@@ -10,12 +10,6 @@ var mongoose = require('mongoose'),
  * Classified Schema
  */
 var ClassifiedSchema = new Schema({
-	name: {
-		type: String,
-		default: '',
-		required: 'Please fill Classified name',
-		trim: true
-	},
 	shortDescription: {
 		type: String,
 		default: '',
@@ -33,11 +27,11 @@ var ClassifiedSchema = new Schema({
 	},
     subcategory: {
 		type: Schema.ObjectId,
-				ref: 'Subcategory'
+		ref: 'Subcategory'
 	},
     family: {
 		type: Schema.ObjectId,
-			ref: 'Family'
+		ref: 'Family'
 	},
     instrumentType: {
 		type: Schema.ObjectId,
