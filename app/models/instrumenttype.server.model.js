@@ -7,14 +7,18 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 /**
- * Instrumenttype Schema
+ * InstrumentType Schema
  */
-var InstrumenttypeSchema = new Schema({
+var InstrumentTypeSchema = new Schema({
 	name: {
 		type: String,
 		default: '',
-		required: 'Please fill Instrumenttype name',
+		required: 'Please fill InstrumentType name',
 		trim: true
+	},
+	family: {
+		type: Schema.ObjectId,
+		ref: 'Family'
 	},
 	created: {
 		type: Date,
@@ -26,4 +30,4 @@ var InstrumenttypeSchema = new Schema({
 	}
 });
 
-mongoose.model('Instrumenttype', InstrumenttypeSchema);
+mongoose.model('InstrumentType', InstrumentTypeSchema);

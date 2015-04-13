@@ -2,18 +2,23 @@
 
 module.exports = function(app) {
 	var users = require('../../app/controllers/users.server.controller');
-	var instrumenttypes = require('../../app/controllers/instrumenttypes.server.controller');
+	var instrumentTypes = require('../../app/controllers/instrumentTypes.server.controller');
 
-	// Instrumenttypes Routes
-	app.route('/instrumenttypes')
-		.get(instrumenttypes.list)
-		.post(users.requiresLogin, instrumenttypes.create);
+	// InstrumentTypes Routes
+	app.route('/instrumentTypes')
+		.get(instrumentTypes.list)
+		.post(users.requiresLogin, instrumentTypes.create);
 
-	app.route('/instrumenttypes/:instrumenttypeId')
-		.get(instrumenttypes.read)
-		.put(users.requiresLogin, instrumenttypes.hasAuthorization, instrumenttypes.update)
-		.delete(users.requiresLogin, instrumenttypes.hasAuthorization, instrumenttypes.delete);
+	app.route('/instrumentTypes/family/:familyId')
+		.get(instrumentTypes.list);
 
-	// Finish by binding the Instrumenttype middleware
-	app.param('instrumenttypeId', instrumenttypes.instrumenttypeByID);
+	app.param('familyId', instrumentTypes.listByFamilyId);
+
+	app.route('/instrumentTypes/:instrumentTypeId')
+		.get(instrumentTypes.read)
+		.put(users.requiresLogin, instrumentTypes.hasAuthorization, instrumentTypes.update)
+		.delete(users.requiresLogin, instrumentTypes.hasAuthorization, instrumentTypes.delete);
+
+	// Finish by binding the InstrumentType middleware
+	app.param('instrumentTypeId', instrumentTypes.instrumentTypeByID);
 };

@@ -5,18 +5,18 @@ var should = require('should'),
 	app = require('../../server'),
 	mongoose = require('mongoose'),
 	User = mongoose.model('User'),
-	Instrumenttype = mongoose.model('Instrumenttype'),
+	InstrumentType = mongoose.model('InstrumentType'),
 	agent = request.agent(app);
 
 /**
  * Globals
  */
-var credentials, user, instrumenttype;
+var credentials, user, instrumentType;
 
 /**
- * Instrumenttype routes tests
+ * InstrumentType routes tests
  */
-describe('Instrumenttype CRUD tests', function() {
+describe('InstrumentType CRUD tests', function() {
 	beforeEach(function(done) {
 		// Create user credentials
 		credentials = {
@@ -35,17 +35,17 @@ describe('Instrumenttype CRUD tests', function() {
 			provider: 'local'
 		});
 
-		// Save a user to the test db and create new Instrumenttype
+		// Save a user to the test db and create new InstrumentType
 		user.save(function() {
-			instrumenttype = {
-				name: 'Instrumenttype Name'
+			instrumentType = {
+				name: 'InstrumentType Name'
 			};
 
 			done();
 		});
 	});
 
-	it('should be able to save Instrumenttype instance if logged in', function(done) {
+	it('should be able to save InstrumentType instance if logged in', function(done) {
 		agent.post('/auth/signin')
 			.send(credentials)
 			.expect(200)
@@ -56,26 +56,26 @@ describe('Instrumenttype CRUD tests', function() {
 				// Get the userId
 				var userId = user.id;
 
-				// Save a new Instrumenttype
-				agent.post('/instrumenttypes')
-					.send(instrumenttype)
+				// Save a new InstrumentType
+				agent.post('/instrumentTypes')
+					.send(instrumentType)
 					.expect(200)
-					.end(function(instrumenttypeSaveErr, instrumenttypeSaveRes) {
-						// Handle Instrumenttype save error
-						if (instrumenttypeSaveErr) done(instrumenttypeSaveErr);
+					.end(function(instrumentTypeSaveErr, instrumentTypeSaveRes) {
+						// Handle InstrumentType save error
+						if (instrumentTypeSaveErr) done(instrumentTypeSaveErr);
 
-						// Get a list of Instrumenttypes
-						agent.get('/instrumenttypes')
-							.end(function(instrumenttypesGetErr, instrumenttypesGetRes) {
-								// Handle Instrumenttype save error
-								if (instrumenttypesGetErr) done(instrumenttypesGetErr);
+						// Get a list of InstrumentTypes
+						agent.get('/instrumentTypes')
+							.end(function(instrumentTypesGetErr, instrumentTypesGetRes) {
+								// Handle InstrumentType save error
+								if (instrumentTypesGetErr) done(instrumentTypesGetErr);
 
-								// Get Instrumenttypes list
-								var instrumenttypes = instrumenttypesGetRes.body;
+								// Get InstrumentTypes list
+								var instrumentTypes = instrumentTypesGetRes.body;
 
 								// Set assertions
-								(instrumenttypes[0].user._id).should.equal(userId);
-								(instrumenttypes[0].name).should.match('Instrumenttype Name');
+								(instrumentTypes[0].user._id).should.equal(userId);
+								(instrumentTypes[0].name).should.match('InstrumentType Name');
 
 								// Call the assertion callback
 								done();
@@ -84,19 +84,19 @@ describe('Instrumenttype CRUD tests', function() {
 			});
 	});
 
-	it('should not be able to save Instrumenttype instance if not logged in', function(done) {
-		agent.post('/instrumenttypes')
-			.send(instrumenttype)
+	it('should not be able to save InstrumentType instance if not logged in', function(done) {
+		agent.post('/instrumentTypes')
+			.send(instrumentType)
 			.expect(401)
-			.end(function(instrumenttypeSaveErr, instrumenttypeSaveRes) {
+			.end(function(instrumentTypeSaveErr, instrumentTypeSaveRes) {
 				// Call the assertion callback
-				done(instrumenttypeSaveErr);
+				done(instrumentTypeSaveErr);
 			});
 	});
 
-	it('should not be able to save Instrumenttype instance if no name is provided', function(done) {
+	it('should not be able to save InstrumentType instance if no name is provided', function(done) {
 		// Invalidate name field
-		instrumenttype.name = '';
+		instrumentType.name = '';
 
 		agent.post('/auth/signin')
 			.send(credentials)
@@ -108,21 +108,21 @@ describe('Instrumenttype CRUD tests', function() {
 				// Get the userId
 				var userId = user.id;
 
-				// Save a new Instrumenttype
-				agent.post('/instrumenttypes')
-					.send(instrumenttype)
+				// Save a new InstrumentType
+				agent.post('/instrumentTypes')
+					.send(instrumentType)
 					.expect(400)
-					.end(function(instrumenttypeSaveErr, instrumenttypeSaveRes) {
+					.end(function(instrumentTypeSaveErr, instrumentTypeSaveRes) {
 						// Set message assertion
-						(instrumenttypeSaveRes.body.message).should.match('Please fill Instrumenttype name');
-						
-						// Handle Instrumenttype save error
-						done(instrumenttypeSaveErr);
+						(instrumentTypeSaveRes.body.message).should.match('Please fill InstrumentType name');
+
+						// Handle InstrumentType save error
+						done(instrumentTypeSaveErr);
 					});
 			});
 	});
 
-	it('should be able to update Instrumenttype instance if signed in', function(done) {
+	it('should be able to update InstrumentType instance if signed in', function(done) {
 		agent.post('/auth/signin')
 			.send(credentials)
 			.expect(200)
@@ -133,28 +133,28 @@ describe('Instrumenttype CRUD tests', function() {
 				// Get the userId
 				var userId = user.id;
 
-				// Save a new Instrumenttype
-				agent.post('/instrumenttypes')
-					.send(instrumenttype)
+				// Save a new InstrumentType
+				agent.post('/instrumentTypes')
+					.send(instrumentType)
 					.expect(200)
-					.end(function(instrumenttypeSaveErr, instrumenttypeSaveRes) {
-						// Handle Instrumenttype save error
-						if (instrumenttypeSaveErr) done(instrumenttypeSaveErr);
+					.end(function(instrumentTypeSaveErr, instrumentTypeSaveRes) {
+						// Handle InstrumentType save error
+						if (instrumentTypeSaveErr) done(instrumentTypeSaveErr);
 
-						// Update Instrumenttype name
-						instrumenttype.name = 'WHY YOU GOTTA BE SO MEAN?';
+						// Update InstrumentType name
+						instrumentType.name = 'WHY YOU GOTTA BE SO MEAN?';
 
-						// Update existing Instrumenttype
-						agent.put('/instrumenttypes/' + instrumenttypeSaveRes.body._id)
-							.send(instrumenttype)
+						// Update existing InstrumentType
+						agent.put('/instrumentTypes/' + instrumentTypeSaveRes.body._id)
+							.send(instrumentType)
 							.expect(200)
-							.end(function(instrumenttypeUpdateErr, instrumenttypeUpdateRes) {
-								// Handle Instrumenttype update error
-								if (instrumenttypeUpdateErr) done(instrumenttypeUpdateErr);
+							.end(function(instrumentTypeUpdateErr, instrumentTypeUpdateRes) {
+								// Handle InstrumentType update error
+								if (instrumentTypeUpdateErr) done(instrumentTypeUpdateErr);
 
 								// Set assertions
-								(instrumenttypeUpdateRes.body._id).should.equal(instrumenttypeSaveRes.body._id);
-								(instrumenttypeUpdateRes.body.name).should.match('WHY YOU GOTTA BE SO MEAN?');
+								(instrumentTypeUpdateRes.body._id).should.equal(instrumentTypeSaveRes.body._id);
+								(instrumentTypeUpdateRes.body.name).should.match('WHY YOU GOTTA BE SO MEAN?');
 
 								// Call the assertion callback
 								done();
@@ -163,14 +163,14 @@ describe('Instrumenttype CRUD tests', function() {
 			});
 	});
 
-	it('should be able to get a list of Instrumenttypes if not signed in', function(done) {
-		// Create new Instrumenttype model instance
-		var instrumenttypeObj = new Instrumenttype(instrumenttype);
+	it('should be able to get a list of InstrumentTypes if not signed in', function(done) {
+		// Create new InstrumentType model instance
+		var instrumentTypeObj = new InstrumentType(instrumentType);
 
-		// Save the Instrumenttype
-		instrumenttypeObj.save(function() {
-			// Request Instrumenttypes
-			request(app).get('/instrumenttypes')
+		// Save the InstrumentType
+		instrumentTypeObj.save(function() {
+			// Request InstrumentTypes
+			request(app).get('/instrumentTypes')
 				.end(function(req, res) {
 					// Set assertion
 					res.body.should.be.an.Array.with.lengthOf(1);
@@ -183,16 +183,16 @@ describe('Instrumenttype CRUD tests', function() {
 	});
 
 
-	it('should be able to get a single Instrumenttype if not signed in', function(done) {
-		// Create new Instrumenttype model instance
-		var instrumenttypeObj = new Instrumenttype(instrumenttype);
+	it('should be able to get a single InstrumentType if not signed in', function(done) {
+		// Create new InstrumentType model instance
+		var instrumentTypeObj = new InstrumentType(instrumentType);
 
-		// Save the Instrumenttype
-		instrumenttypeObj.save(function() {
-			request(app).get('/instrumenttypes/' + instrumenttypeObj._id)
+		// Save the InstrumentType
+		instrumentTypeObj.save(function() {
+			request(app).get('/instrumentTypes/' + instrumentTypeObj._id)
 				.end(function(req, res) {
 					// Set assertion
-					res.body.should.be.an.Object.with.property('name', instrumenttype.name);
+					res.body.should.be.an.Object.with.property('name', instrumentType.name);
 
 					// Call the assertion callback
 					done();
@@ -200,7 +200,7 @@ describe('Instrumenttype CRUD tests', function() {
 		});
 	});
 
-	it('should be able to delete Instrumenttype instance if signed in', function(done) {
+	it('should be able to delete InstrumentType instance if signed in', function(done) {
 		agent.post('/auth/signin')
 			.send(credentials)
 			.expect(200)
@@ -211,24 +211,24 @@ describe('Instrumenttype CRUD tests', function() {
 				// Get the userId
 				var userId = user.id;
 
-				// Save a new Instrumenttype
-				agent.post('/instrumenttypes')
-					.send(instrumenttype)
+				// Save a new InstrumentType
+				agent.post('/instrumentTypes')
+					.send(instrumentType)
 					.expect(200)
-					.end(function(instrumenttypeSaveErr, instrumenttypeSaveRes) {
-						// Handle Instrumenttype save error
-						if (instrumenttypeSaveErr) done(instrumenttypeSaveErr);
+					.end(function(instrumentTypeSaveErr, instrumentTypeSaveRes) {
+						// Handle InstrumentType save error
+						if (instrumentTypeSaveErr) done(instrumentTypeSaveErr);
 
-						// Delete existing Instrumenttype
-						agent.delete('/instrumenttypes/' + instrumenttypeSaveRes.body._id)
-							.send(instrumenttype)
+						// Delete existing InstrumentType
+						agent.delete('/instrumentTypes/' + instrumentTypeSaveRes.body._id)
+							.send(instrumentType)
 							.expect(200)
-							.end(function(instrumenttypeDeleteErr, instrumenttypeDeleteRes) {
-								// Handle Instrumenttype error error
-								if (instrumenttypeDeleteErr) done(instrumenttypeDeleteErr);
+							.end(function(instrumentTypeDeleteErr, instrumentTypeDeleteRes) {
+								// Handle InstrumentType error error
+								if (instrumentTypeDeleteErr) done(instrumentTypeDeleteErr);
 
 								// Set assertions
-								(instrumenttypeDeleteRes.body._id).should.equal(instrumenttypeSaveRes.body._id);
+								(instrumentTypeDeleteRes.body._id).should.equal(instrumentTypeSaveRes.body._id);
 
 								// Call the assertion callback
 								done();
@@ -237,24 +237,24 @@ describe('Instrumenttype CRUD tests', function() {
 			});
 	});
 
-	it('should not be able to delete Instrumenttype instance if not signed in', function(done) {
-		// Set Instrumenttype user 
-		instrumenttype.user = user;
+	it('should not be able to delete InstrumentType instance if not signed in', function(done) {
+		// Set InstrumentType user
+		instrumentType.user = user;
 
-		// Create new Instrumenttype model instance
-		var instrumenttypeObj = new Instrumenttype(instrumenttype);
+		// Create new InstrumentType model instance
+		var instrumentTypeObj = new InstrumentType(instrumentType);
 
-		// Save the Instrumenttype
-		instrumenttypeObj.save(function() {
-			// Try deleting Instrumenttype
-			request(app).delete('/instrumenttypes/' + instrumenttypeObj._id)
+		// Save the InstrumentType
+		instrumentTypeObj.save(function() {
+			// Try deleting InstrumentType
+			request(app).delete('/instrumentTypes/' + instrumentTypeObj._id)
 			.expect(401)
-			.end(function(instrumenttypeDeleteErr, instrumenttypeDeleteRes) {
+			.end(function(instrumentTypeDeleteErr, instrumentTypeDeleteRes) {
 				// Set message assertion
-				(instrumenttypeDeleteRes.body.message).should.match('User is not logged in');
+				(instrumentTypeDeleteRes.body.message).should.match('User is not logged in');
 
-				// Handle Instrumenttype error error
-				done(instrumenttypeDeleteErr);
+				// Handle InstrumentType error error
+				done(instrumentTypeDeleteErr);
 			});
 
 		});
@@ -262,7 +262,7 @@ describe('Instrumenttype CRUD tests', function() {
 
 	afterEach(function(done) {
 		User.remove().exec();
-		Instrumenttype.remove().exec();
+		InstrumentType.remove().exec();
 		done();
 	});
 });

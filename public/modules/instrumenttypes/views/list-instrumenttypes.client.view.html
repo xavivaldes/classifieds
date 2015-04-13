@@ -1,19 +1,19 @@
-<section data-ng-controller="InstrumenttypesController" data-ng-init="find()">
+<section data-ng-controller="InstrumentTypesController" data-ng-init="find()">
     <div class="page-header">
-        <h1>Instrumenttypes</h1>
+        <h1>InstrumentTypes</h1>
     </div>
     <div class="list-group">
-        <a data-ng-repeat="instrumenttype in instrumenttypes" data-ng-href="#!/instrumenttypes/{{instrumenttype._id}}" class="list-group-item">
+        <a data-ng-repeat="instrumentType in instrumentTypes" data-ng-href="#!/instrumentTypes/{{instrumentType._id}}" class="list-group-item">
 			<small class="list-group-item-text">
 				Posted on
-				<span data-ng-bind="instrumenttype.created | date:'medium'"></span>
+				<span data-ng-bind="instrumentType.created | date:'medium'"></span>
 				by
-				<span data-ng-bind="instrumenttype.user.displayName"></span>
+				<span data-ng-bind="instrumentType.user.displayName"></span>
 			</small>
-			<h4 class="list-group-item-heading" data-ng-bind="instrumenttype.name"></h4>
+			<h4 class="list-group-item-heading" data-ng-bind="instrumentType.name"></h4>
         </a>
     </div>
-    <div class="alert alert-warning text-center" data-ng-hide="!instrumenttypes.$resolved || instrumenttypes.length">
-    	No Instrumenttypes yet, why don't you <a href="/#!/instrumenttypes/create">create one</a>?
+    <div class="alert alert-warning text-center" data-ng-hide="!instrumentTypes.$resolved || instrumentTypes.length">
+    	No InstrumentTypes yet, why don't you <a href="/#!/instrumentTypes/create">create one</a>?
     </div>
 </section>

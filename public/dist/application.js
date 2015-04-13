@@ -66,7 +66,7 @@ ApplicationConfiguration.registerModule('families');
 'use strict';
 
 // Use applicaion configuration module to register a new module
-ApplicationConfiguration.registerModule('instrumenttypes');
+ApplicationConfiguration.registerModule('instrumentTypes');
 'use strict';
 
 // Use applicaion configuration module to register a new module
@@ -256,7 +256,7 @@ angular.module('categories').controller('CategoriesController', ['$scope', '$sta
 
 		// Remove existing Category
 		$scope.remove = function(category) {
-			if ( category ) { 
+			if ( category ) {
 				category.$remove();
 
 				for (var i in $scope.categories) {
@@ -289,7 +289,7 @@ angular.module('categories').controller('CategoriesController', ['$scope', '$sta
 
 		// Find existing Category
 		$scope.findOne = function() {
-			$scope.category = Categories.get({ 
+			$scope.category = Categories.get({
 				categoryId: $stateParams.categoryId
 			});
 		};
@@ -371,7 +371,7 @@ angular.module('classifieds').controller('ClassifiedsController', ['$scope', '$s
 
 		// Remove existing Classified
 		$scope.remove = function(classified) {
-			if ( classified ) { 
+			if ( classified ) {
 				classified.$remove();
 
 				for (var i in $scope.classifieds) {
@@ -404,7 +404,7 @@ angular.module('classifieds').controller('ClassifiedsController', ['$scope', '$s
 
 		// Find existing Classified
 		$scope.findOne = function() {
-			$scope.classified = Classifieds.get({ 
+			$scope.classified = Classifieds.get({
 				classifiedId: $stateParams.classifiedId
 			});
 		};
@@ -478,7 +478,7 @@ angular.module('core').service('Menus', [
 		// Define the menus object
 		this.menus = {};
 
-		// A private function for rendering decision 
+		// A private function for rendering decision
 		var shouldRender = function(user) {
 			if (user) {
 				if (!!~this.roles.indexOf('*')) {
@@ -695,7 +695,7 @@ angular.module('families').controller('FamiliesController', ['$scope', '$statePa
 
 		// Remove existing Family
 		$scope.remove = function(family) {
-			if ( family ) { 
+			if ( family ) {
 				family.$remove();
 
 				for (var i in $scope.families) {
@@ -728,7 +728,7 @@ angular.module('families').controller('FamiliesController', ['$scope', '$statePa
 
 		// Find existing Family
 		$scope.findOne = function() {
-			$scope.family = Families.get({ 
+			$scope.family = Families.get({
 				familyId: $stateParams.familyId
 			});
 		};
@@ -750,56 +750,56 @@ angular.module('families').factory('Families', ['$resource',
 'use strict';
 
 // Configuring the Articles module
-angular.module('instrumenttypes').run(['Menus',
+angular.module('instrumentTypes').run(['Menus',
 	function(Menus) {
 		// Set top bar menu items
-		Menus.addMenuItem('topbar', 'Instrumenttypes', 'instrumenttypes', 'dropdown', '/instrumenttypes(/create)?');
-		Menus.addSubMenuItem('topbar', 'instrumenttypes', 'List Instrumenttypes', 'instrumenttypes');
-		Menus.addSubMenuItem('topbar', 'instrumenttypes', 'New Instrumenttype', 'instrumenttypes/create');
+		Menus.addMenuItem('topbar', 'InstrumentTypes', 'instrumentTypes', 'dropdown', '/instrumentTypes(/create)?');
+		Menus.addSubMenuItem('topbar', 'instrumentTypes', 'List InstrumentTypes', 'instrumentTypes');
+		Menus.addSubMenuItem('topbar', 'instrumentTypes', 'New InstrumentType', 'instrumentTypes/create');
 	}
 ]);
 'use strict';
 
 //Setting up route
-angular.module('instrumenttypes').config(['$stateProvider',
+angular.module('instrumentTypes').config(['$stateProvider',
 	function($stateProvider) {
-		// Instrumenttypes state routing
+		// InstrumentTypes state routing
 		$stateProvider.
-		state('listInstrumenttypes', {
-			url: '/instrumenttypes',
-			templateUrl: 'modules/instrumenttypes/views/list-instrumenttypes.client.view.html'
+		state('listInstrumentTypes', {
+			url: '/instrumentTypes',
+			templateUrl: 'modules/instrumentTypes/views/list-instrumentTypes.client.view.html'
 		}).
-		state('createInstrumenttype', {
-			url: '/instrumenttypes/create',
-			templateUrl: 'modules/instrumenttypes/views/create-instrumenttype.client.view.html'
+		state('createInstrumentType', {
+			url: '/instrumentTypes/create',
+			templateUrl: 'modules/instrumentTypes/views/create-instrumentType.client.view.html'
 		}).
-		state('viewInstrumenttype', {
-			url: '/instrumenttypes/:instrumenttypeId',
-			templateUrl: 'modules/instrumenttypes/views/view-instrumenttype.client.view.html'
+		state('viewInstrumentType', {
+			url: '/instrumentTypes/:instrumentTypeId',
+			templateUrl: 'modules/instrumentTypes/views/view-instrumentType.client.view.html'
 		}).
-		state('editInstrumenttype', {
-			url: '/instrumenttypes/:instrumenttypeId/edit',
-			templateUrl: 'modules/instrumenttypes/views/edit-instrumenttype.client.view.html'
+		state('editInstrumentType', {
+			url: '/instrumentTypes/:instrumentTypeId/edit',
+			templateUrl: 'modules/instrumentTypes/views/edit-instrumentType.client.view.html'
 		});
 	}
 ]);
 'use strict';
 
-// Instrumenttypes controller
-angular.module('instrumenttypes').controller('InstrumenttypesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Instrumenttypes',
-	function($scope, $stateParams, $location, Authentication, Instrumenttypes) {
+// InstrumentTypes controller
+angular.module('instrumentTypes').controller('InstrumentTypesController', ['$scope', '$stateParams', '$location', 'Authentication', 'InstrumentTypes',
+	function($scope, $stateParams, $location, Authentication, InstrumentTypes) {
 		$scope.authentication = Authentication;
 
-		// Create new Instrumenttype
+		// Create new InstrumentType
 		$scope.create = function() {
-			// Create new Instrumenttype object
-			var instrumenttype = new Instrumenttypes ({
+			// Create new InstrumentType object
+			var instrumentType = new InstrumentTypes ({
 				name: this.name
 			});
 
 			// Redirect after save
-			instrumenttype.$save(function(response) {
-				$location.path('instrumenttypes/' + response._id);
+			instrumentType.$save(function(response) {
+				$location.path('instrumentTypes/' + response._id);
 
 				// Clear form fields
 				$scope.name = '';
@@ -808,53 +808,53 @@ angular.module('instrumenttypes').controller('InstrumenttypesController', ['$sco
 			});
 		};
 
-		// Remove existing Instrumenttype
-		$scope.remove = function(instrumenttype) {
-			if ( instrumenttype ) { 
-				instrumenttype.$remove();
+		// Remove existing InstrumentType
+		$scope.remove = function(instrumentType) {
+			if ( instrumentType ) {
+				instrumentType.$remove();
 
-				for (var i in $scope.instrumenttypes) {
-					if ($scope.instrumenttypes [i] === instrumenttype) {
-						$scope.instrumenttypes.splice(i, 1);
+				for (var i in $scope.instrumentTypes) {
+					if ($scope.instrumentTypes [i] === instrumentType) {
+						$scope.instrumentTypes.splice(i, 1);
 					}
 				}
 			} else {
-				$scope.instrumenttype.$remove(function() {
-					$location.path('instrumenttypes');
+				$scope.instrumentType.$remove(function() {
+					$location.path('instrumentTypes');
 				});
 			}
 		};
 
-		// Update existing Instrumenttype
+		// Update existing InstrumentType
 		$scope.update = function() {
-			var instrumenttype = $scope.instrumenttype;
+			var instrumentType = $scope.instrumentType;
 
-			instrumenttype.$update(function() {
-				$location.path('instrumenttypes/' + instrumenttype._id);
+			instrumentType.$update(function() {
+				$location.path('instrumentTypes/' + instrumentType._id);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
 		};
 
-		// Find a list of Instrumenttypes
+		// Find a list of InstrumentTypes
 		$scope.find = function() {
-			$scope.instrumenttypes = Instrumenttypes.query();
+			$scope.instrumentTypes = InstrumentTypes.query();
 		};
 
-		// Find existing Instrumenttype
+		// Find existing InstrumentType
 		$scope.findOne = function() {
-			$scope.instrumenttype = Instrumenttypes.get({ 
-				instrumenttypeId: $stateParams.instrumenttypeId
+			$scope.instrumentType = InstrumentTypes.get({
+				instrumentTypeId: $stateParams.instrumentTypeId
 			});
 		};
 	}
 ]);
 'use strict';
 
-//Instrumenttypes service used to communicate Instrumenttypes REST endpoints
-angular.module('instrumenttypes').factory('Instrumenttypes', ['$resource',
+//InstrumentTypes service used to communicate InstrumentTypes REST endpoints
+angular.module('instrumentTypes').factory('InstrumentTypes', ['$resource',
 	function($resource) {
-		return $resource('instrumenttypes/:instrumenttypeId', { instrumenttypeId: '@_id'
+		return $resource('instrumentTypes/:instrumentTypeId', { instrumentTypeId: '@_id'
 		}, {
 			update: {
 				method: 'PUT'
@@ -925,7 +925,7 @@ angular.module('subcategories').controller('SubcategoriesController', ['$scope',
 
 		// Remove existing Subcategory
 		$scope.remove = function(subcategory) {
-			if ( subcategory ) { 
+			if ( subcategory ) {
 				subcategory.$remove();
 
 				for (var i in $scope.subcategories) {
@@ -958,7 +958,7 @@ angular.module('subcategories').controller('SubcategoriesController', ['$scope',
 
 		// Find existing Subcategory
 		$scope.findOne = function() {
-			$scope.subcategory = Subcategories.get({ 
+			$scope.subcategory = Subcategories.get({
 				subcategoryId: $stateParams.subcategoryId
 			});
 		};
@@ -996,7 +996,7 @@ angular.module('users').config(['$httpProvider',
 								$location.path('signin');
 								break;
 							case 403:
-								// Add unauthorized behaviour 
+								// Add unauthorized behaviour
 								break;
 						}
 
@@ -1139,7 +1139,7 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 		// If user is not signed in then redirect back home
 		if (!$scope.user) $location.path('/');
 
-		// Check if there are additional accounts 
+		// Check if there are additional accounts
 		$scope.hasConnectedAdditionalSocialAccounts = function(provider) {
 			for (var i in $scope.user.additionalProvidersData) {
 				return true;
@@ -1208,7 +1208,7 @@ angular.module('users').factory('Authentication', ['$window', function($window) 
 	var auth = {
 		user: $window.user
 	};
-	
+
 	return auth;
 }]);
 

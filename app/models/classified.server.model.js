@@ -35,7 +35,7 @@ var ClassifiedSchema = new Schema({
 	},
     instrumentType: {
 		type: Schema.ObjectId,
-		ref: 'Instrumenttype'
+		ref: 'InstrumentType'
 	},
     views: {
 		type: Number,

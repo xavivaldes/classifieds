@@ -1,8 +1,8 @@
 'use strict';
 
 // Classifieds controller
-angular.module('classifieds').controller('ClassifiedsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Classifieds',
-	function($scope, $stateParams, $location, Authentication, Classifieds) {
+angular.module('classifieds').controller('ClassifiedsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Classifieds', 'Categories', 'Families',
+	function($scope, $stateParams, $location, Authentication, Classifieds, Categories, Families) {
 		$scope.authentication = Authentication;
 
 		// Create new Classified
@@ -25,7 +25,7 @@ angular.module('classifieds').controller('ClassifiedsController', ['$scope', '$s
 
 		// Remove existing Classified
 		$scope.remove = function(classified) {
-			if ( classified ) { 
+			if ( classified ) {
 				classified.$remove();
 
 				for (var i in $scope.classifieds) {
@@ -56,11 +56,20 @@ angular.module('classifieds').controller('ClassifiedsController', ['$scope', '$s
 			$scope.classifieds = Classifieds.query();
 		};
 
+		$scope.loadAdditionalInfo = function() {
+			$scope.categories = Categories.query();
+			$scope.families = Families.query();
+		};
+
 		// Find existing Classified
 		$scope.findOne = function() {
-			$scope.classified = Classifieds.get({ 
+			$scope.classified = Classifieds.get({
 				classifiedId: $stateParams.classifiedId
 			});
 		};
+
+		$scope.$watch('family', function(newVal) {
+			if(newVal) $scope.instrumentTypes = InstrumentTypes.;
+		});
 	}
 ]);

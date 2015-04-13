@@ -6,17 +6,17 @@
 var should = require('should'),
 	mongoose = require('mongoose'),
 	User = mongoose.model('User'),
-	Instrumenttype = mongoose.model('Instrumenttype');
+	InstrumentType = mongoose.model('InstrumentType');
 
 /**
  * Globals
  */
-var user, instrumenttype;
+var user, instrumentType;
 
 /**
  * Unit tests
  */
-describe('Instrumenttype Model Unit Tests:', function() {
+describe('InstrumentType Model Unit Tests:', function() {
 	beforeEach(function(done) {
 		user = new User({
 			firstName: 'Full',
@@ -27,9 +27,9 @@ describe('Instrumenttype Model Unit Tests:', function() {
 			password: 'password'
 		});
 
-		user.save(function() { 
-			instrumenttype = new Instrumenttype({
-				name: 'Instrumenttype Name',
+		user.save(function() {
+			instrumentType = new InstrumentType({
+				name: 'InstrumentType Name',
 				user: user
 			});
 
@@ -39,24 +39,24 @@ describe('Instrumenttype Model Unit Tests:', function() {
 
 	describe('Method Save', function() {
 		it('should be able to save without problems', function(done) {
-			return instrumenttype.save(function(err) {
+			return instrumentType.save(function(err) {
 				should.not.exist(err);
 				done();
 			});
 		});
 
-		it('should be able to show an error when try to save without name', function(done) { 
-			instrumenttype.name = '';
+		it('should be able to show an error when try to save without name', function(done) {
+			instrumentType.name = '';
 
-			return instrumenttype.save(function(err) {
+			return instrumentType.save(function(err) {
 				should.exist(err);
 				done();
 			});
 		});
 	});
 
-	afterEach(function(done) { 
-		Instrumenttype.remove().exec();
+	afterEach(function(done) {
+		InstrumentType.remove().exec();
 		User.remove().exec();
 
 		done();

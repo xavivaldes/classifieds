@@ -1,25 +1,25 @@
 'use strict';
 
 //Setting up route
-angular.module('instrumenttypes').config(['$stateProvider',
+angular.module('instrumentTypes').config(['$stateProvider',
 	function($stateProvider) {
-		// Instrumenttypes state routing
+		// InstrumentTypes state routing
 		$stateProvider.
-		state('listInstrumenttypes', {
-			url: '/instrumenttypes',
-			templateUrl: 'modules/instrumenttypes/views/list-instrumenttypes.client.view.html'
+		state('listInstrumentTypes', {
+			url: '/instrumentTypes',
+			templateUrl: 'modules/instrumentTypes/views/list-instrumentTypes.client.view.html'
 		}).
-		state('createInstrumenttype', {
-			url: '/instrumenttypes/create',
-			templateUrl: 'modules/instrumenttypes/views/create-instrumenttype.client.view.html'
+		state('createInstrumentType', {
+			url: '/instrumentTypes/create',
+			templateUrl: 'modules/instrumentTypes/views/create-instrumentType.client.view.html'
 		}).
-		state('viewInstrumenttype', {
-			url: '/instrumenttypes/:instrumenttypeId',
-			templateUrl: 'modules/instrumenttypes/views/view-instrumenttype.client.view.html'
+		state('viewInstrumentType', {
+			url: '/instrumentTypes/:instrumentTypeId',
+			templateUrl: 'modules/instrumentTypes/views/view-instrumentType.client.view.html'
 		}).
-		state('editInstrumenttype', {
-			url: '/instrumenttypes/:instrumenttypeId/edit',
-			templateUrl: 'modules/instrumenttypes/views/edit-instrumenttype.client.view.html'
+		state('editInstrumentType', {
+			url: '/instrumentTypes/:instrumentTypeId/edit',
+			templateUrl: 'modules/instrumentTypes/views/edit-instrumentType.client.view.html'
 		});
 	}
 ]);

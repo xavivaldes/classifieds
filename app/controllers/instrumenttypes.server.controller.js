@@ -5,102 +5,118 @@
  */
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
-	Instrumenttype = mongoose.model('Instrumenttype'),
+	InstrumentType = mongoose.model('InstrumentType'),
 	_ = require('lodash');
 
 /**
- * Create a Instrumenttype
+ * Create a InstrumentType
  */
 exports.create = function(req, res) {
-	var instrumenttype = new Instrumenttype(req.body);
-	instrumenttype.user = req.user;
+	var instrumentType = new InstrumentType(req.body);
+	instrumentType.user = req.user;
 
-	instrumenttype.save(function(err) {
+	instrumentType.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(instrumenttype);
+			res.jsonp(instrumentType);
 		}
 	});
 };
 
 /**
- * Show the current Instrumenttype
+ * Show the current InstrumentType
  */
 exports.read = function(req, res) {
-	res.jsonp(req.instrumenttype);
+	res.jsonp(req.instrumentType);
+};
+
+exports.readList = function(req, res) {
+	res.jsonp(req.instrumentTypes);
 };
 
 /**
- * Update a Instrumenttype
+ * Update a InstrumentType
  */
 exports.update = function(req, res) {
-	var instrumenttype = req.instrumenttype ;
+	var instrumentType = req.instrumentType ;
 
-	instrumenttype = _.extend(instrumenttype , req.body);
+	instrumentType = _.extend(instrumentType , req.body);
 
-	instrumenttype.save(function(err) {
+	instrumentType.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(instrumenttype);
+			res.jsonp(instrumentType);
 		}
 	});
 };
 
 /**
- * Delete an Instrumenttype
+ * Delete an InstrumentType
  */
 exports.delete = function(req, res) {
-	var instrumenttype = req.instrumenttype ;
+	var instrumentType = req.instrumentType ;
 
-	instrumenttype.remove(function(err) {
+	instrumentType.remove(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(instrumenttype);
+			res.jsonp(instrumentType);
 		}
 	});
 };
 
 /**
- * List of Instrumenttypes
+ * List of InstrumentTypes
  */
-exports.list = function(req, res) { 
+exports.list = function(req, res) {
 	Instrumenttype.find().sort('-created').populate('user', 'displayName').exec(function(err, instrumenttypes) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(instrumenttypes);
+			res.jsonp(instrumentTypes);
 		}
 	});
 };
 
 /**
- * Instrumenttype middleware
+ * InstrumentType middleware
  */
-exports.instrumenttypeByID = function(req, res, next, id) { 
-	Instrumenttype.findById(id).populate('user', 'displayName').exec(function(err, instrumenttype) {
+exports.instrumentTypeByID = function(req, res, next, id) {
+	InstrumentType.findById(id).populate('user', 'displayName').exec(function(err, instrumentType) {
 		if (err) return next(err);
-		if (! instrumenttype) return next(new Error('Failed to load Instrumenttype ' + id));
-		req.instrumenttype = instrumenttype ;
+		if (! instrumentType) return next(new Error('Failed to load InstrumentType ' + id));
+		req.instrumentType = instrumentType ;
 		next();
 	});
 };
 
+exports.listByFamilyId = function(req, res, next, familyId) {
+	InstrumentType.find({family: familyId}).exec(function(err, instrumentTypes) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			req.instrumentTypes = instrumentTypes;
+		}
+	});
+};
+
 /**
- * Instrumenttype authorization middleware
+ * InstrumentType authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.instrumenttype.user.id !== req.user.id) {
+	if (req.instrumentType.user.id !== req.user.id) {
 		return res.status(403).send('User is not authorized');
 	}
 	next();

@@ -1,20 +1,20 @@
 'use strict';
 
-// Instrumenttypes controller
-angular.module('instrumenttypes').controller('InstrumenttypesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Instrumenttypes',
-	function($scope, $stateParams, $location, Authentication, Instrumenttypes) {
+// InstrumentTypes controller
+angular.module('instrumentTypes').controller('InstrumentTypesController', ['$scope', '$stateParams', '$location', 'Authentication', 'InstrumentTypes', 'Families',
+	function($scope, $stateParams, $location, Authentication, InstrumentTypes, Families) {
 		$scope.authentication = Authentication;
 
-		// Create new Instrumenttype
+		// Create new InstrumentType
 		$scope.create = function() {
-			// Create new Instrumenttype object
-			var instrumenttype = new Instrumenttypes ({
+			// Create new InstrumentType object
+			var instrumentType = new InstrumentTypes ({
 				name: this.name
 			});
 
 			// Redirect after save
-			instrumenttype.$save(function(response) {
-				$location.path('instrumenttypes/' + response._id);
+			instrumentType.$save(function(response) {
+				$location.path('instrumentTypes/' + response._id);
 
 				// Clear form fields
 				$scope.name = '';
@@ -23,43 +23,47 @@ angular.module('instrumenttypes').controller('InstrumenttypesController', ['$sco
 			});
 		};
 
-		// Remove existing Instrumenttype
-		$scope.remove = function(instrumenttype) {
-			if ( instrumenttype ) { 
-				instrumenttype.$remove();
+		// Remove existing InstrumentType
+		$scope.remove = function(instrumentType) {
+			if ( instrumentType ) {
+				instrumentType.$remove();
 
-				for (var i in $scope.instrumenttypes) {
-					if ($scope.instrumenttypes [i] === instrumenttype) {
-						$scope.instrumenttypes.splice(i, 1);
+				for (var i in $scope.instrumentTypes) {
+					if ($scope.instrumentTypes [i] === instrumentType) {
+						$scope.instrumentTypes.splice(i, 1);
 					}
 				}
 			} else {
-				$scope.instrumenttype.$remove(function() {
-					$location.path('instrumenttypes');
+				$scope.instrumentType.$remove(function() {
+					$location.path('instrumentTypes');
 				});
 			}
 		};
 
-		// Update existing Instrumenttype
+		// Update existing InstrumentType
 		$scope.update = function() {
-			var instrumenttype = $scope.instrumenttype;
+			var instrumentType = $scope.instrumentType;
 
-			instrumenttype.$update(function() {
-				$location.path('instrumenttypes/' + instrumenttype._id);
+			instrumentType.$update(function() {
+				$location.path('instrumentTypes/' + instrumentType._id);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
 		};
 
-		// Find a list of Instrumenttypes
+		// Find a list of InstrumentTypes
 		$scope.find = function() {
-			$scope.instrumenttypes = Instrumenttypes.query();
+			$scope.instrumentTypes = InstrumentTypes.query();
 		};
 
-		// Find existing Instrumenttype
+		$scope.loadAdditionalInfo = function() {
+			$scope.families = Families.query();
+		};
+
+		// Find existing InstrumentType
 		$scope.findOne = function() {
-			$scope.instrumenttype = Instrumenttypes.get({ 
-				instrumenttypeId: $stateParams.instrumenttypeId
+			$scope.instrumentType = InstrumentTypes.get({
+				instrumentTypeId: $stateParams.instrumentTypeId
 			});
 		};
 	}
