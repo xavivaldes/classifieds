@@ -9,7 +9,8 @@ angular.module('instrumentTypes').controller('InstrumentTypesController', ['$sco
 		$scope.create = function() {
 			// Create new InstrumentType object
 			var instrumentType = new InstrumentTypes ({
-				name: this.name
+				name: this.name,
+				family: this.family
 			});
 
 			// Redirect after save

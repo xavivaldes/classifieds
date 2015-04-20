@@ -3,11 +3,19 @@
 module.exports = function(app) {
 	var users = require('../../app/controllers/users.server.controller');
 	var classifieds = require('../../app/controllers/classifieds.server.controller');
+	var multiparty = require('connect-multiparty');
+
+	var multipartyMiddleware = multiparty();
 
 	// Classifieds Routes
 	app.route('/classifieds')
 		.get(classifieds.list)
-		.post(users.requiresLogin, classifieds.create);
+		.post(users.requiresLogin, multipartyMiddleware, classifieds.create);
+
+	app.route('/classifieds/pic')
+		.post(users.requiresLogin, multipartyMiddleware, function(req) {
+			console.log(req.body, req.files);
+		});
 
 	app.route('/classifieds/:classifiedId')
 		.get(classifieds.read)

@@ -10,7 +10,7 @@ module.exports = function(app) {
 		.post(users.requiresLogin, instrumentTypes.create);
 
 	app.route('/instrumentTypes/family/:familyId')
-		.get(instrumentTypes.list);
+		.get(instrumentTypes.readList);
 
 	app.param('familyId', instrumentTypes.listByFamilyId);
 

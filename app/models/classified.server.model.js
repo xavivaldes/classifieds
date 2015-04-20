@@ -13,33 +13,38 @@ var ClassifiedSchema = new Schema({
 	shortDescription: {
 		type: String,
 		default: '',
-		required: 'Please fill Classified name',
+		required: 'Pon una descripción corta',
 		trim: true
 	},
     longDescription: {
 		type: String,
 		default: '',
+		required: 'Pon una descripción',
 		trim: true
 	},
     price: {
 		type: Number,
-		required: 'Please fill Classified name'
+		required: 'Indica un precio'
 	},
-    subcategory: {
+    category: {
 		type: Schema.ObjectId,
-		ref: 'Subcategory'
+		ref: 'Category',
+		required: 'Escoje una categoría'
 	},
     family: {
 		type: Schema.ObjectId,
-		ref: 'Family'
+		ref: 'Family',
+		required: 'Escoje una familia',
 	},
     instrumentType: {
 		type: Schema.ObjectId,
-		ref: 'InstrumentType'
+		ref: 'InstrumentType',
+		required: 'Escoje un tipo de instrumento'
 	},
+	pics: [Buffer],
     views: {
 		type: Number,
-		required: 'Please fill Classified name'
+		default: 0
 	},
     lastUpdate: {
 		type: Date,

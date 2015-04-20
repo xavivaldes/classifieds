@@ -77,7 +77,7 @@ exports.delete = function(req, res) {
  * List of InstrumentTypes
  */
 exports.list = function(req, res) {
-	Instrumenttype.find().sort('-created').populate('user', 'displayName').exec(function(err, instrumenttypes) {
+	InstrumentType.find(req.param('family') ? {family : req.param('family')} : null).sort('-created').populate('user', 'displayName').exec(function(err, instrumentTypes) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -108,6 +108,7 @@ exports.listByFamilyId = function(req, res, next, familyId) {
 			});
 		} else {
 			req.instrumentTypes = instrumentTypes;
+			next();
 		}
 	});
 };

@@ -12,11 +12,22 @@ var mongoose = require('mongoose'),
  * Create a Classified
  */
 exports.create = function(req, res) {
-	var classified = new Classified(req.body);
+	console.log(req.body.data);
+	console.log(req.files);
+	console.log(JSON.parse(req.body.data));
+
+	var jsonClassified = JSON.parse(req.body.data).classified;
+	var classified = new Classified(jsonClassified);
+
+	console.log(jsonClassified);
+
 	classified.user = req.user;
+
+	console.log(classified);
 
 	classified.save(function(err) {
 		if (err) {
+			console.log(errorHandler.getErrorMessage(err));
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
@@ -72,7 +83,7 @@ exports.delete = function(req, res) {
 /**
  * List of Classifieds
  */
-exports.list = function(req, res) { 
+exports.list = function(req, res) {
 	Classified.find().sort('-created').populate('user', 'displayName').exec(function(err, classifieds) {
 		if (err) {
 			return res.status(400).send({
@@ -87,7 +98,7 @@ exports.list = function(req, res) {
 /**
  * Classified middleware
  */
-exports.classifiedByID = function(req, res, next, id) { 
+exports.classifiedByID = function(req, res, next, id) {
 	Classified.findById(id).populate('user', 'displayName').exec(function(err, classified) {
 		if (err) return next(err);
 		if (! classified) return next(new Error('Failed to load Classified ' + id));

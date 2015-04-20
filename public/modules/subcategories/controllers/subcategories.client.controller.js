@@ -59,7 +59,7 @@ angular.module('subcategories').controller('SubcategoriesController', ['$scope',
 
 		$scope.loadAdditionalInfo = function() {
 			$scope.categories = Categories.query();
-		}
+		};
 
 		// Find existing Subcategory
 		$scope.findOne = function() {
