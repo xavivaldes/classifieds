@@ -4,7 +4,7 @@
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'mean';
-	var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ui.router', 'ui.bootstrap', 'ui.utils'];
+	var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ui.router', 'ui.bootstrap', 'ui.utils', 'angularFileUpload'];
 
 	// Add a new vertical module
 	var registerModule = function(moduleName, dependencies) {
@@ -21,6 +21,7 @@ var ApplicationConfiguration = (function() {
 		registerModule: registerModule
 	};
 })();
+
 'use strict';
 
 //Start by defining the main module and adding the module dependencies
@@ -67,6 +68,7 @@ ApplicationConfiguration.registerModule('families');
 
 // Use applicaion configuration module to register a new module
 ApplicationConfiguration.registerModule('instrumentTypes');
+
 'use strict';
 
 // Use applicaion configuration module to register a new module
@@ -256,7 +258,7 @@ angular.module('categories').controller('CategoriesController', ['$scope', '$sta
 
 		// Remove existing Category
 		$scope.remove = function(category) {
-			if ( category ) {
+			if ( category ) { 
 				category.$remove();
 
 				for (var i in $scope.categories) {
@@ -289,7 +291,7 @@ angular.module('categories').controller('CategoriesController', ['$scope', '$sta
 
 		// Find existing Category
 		$scope.findOne = function() {
-			$scope.category = Categories.get({
+			$scope.category = Categories.get({ 
 				categoryId: $stateParams.categoryId
 			});
 		};
@@ -347,31 +349,91 @@ angular.module('classifieds').config(['$stateProvider',
 'use strict';
 
 // Classifieds controller
-angular.module('classifieds').controller('ClassifiedsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Classifieds',
-	function($scope, $stateParams, $location, Authentication, Classifieds) {
+angular.module('classifieds').controller('ClassifiedsController', ['$scope', '$upload', '$stateParams', '$location', 'Authentication', 'Classifieds', 'Categories', 'Families', 'InstrumentTypes',
+	function ($scope, $upload, $stateParams, $location, Authentication, Classifieds, Categories, Families, InstrumentTypes) {
 		$scope.authentication = Authentication;
 
+		$scope.sendFile = function (classifiedId) {
+			var file = $scope.files[0];
+			console.log(file);
+			$scope.upload = $upload.upload({
+				url: 'classifieds/pic', //upload.php script, node.js route, or servlet url
+				//method: 'POST' or 'PUT',
+				//headers: {'header-key': 'header-value'},
+				//withCredentials: true,
+				data: {classified: classifiedId},
+				file: file // or list of files ($files) for html5 only
+				//fileName: 'doc.jpg' or ['1.jpg', '2.jpg', ...] // to modify the name of the file(s)
+				// customize file formData name ('Content-Desposition'), server side file variable name.
+				//fileFormDataName: myFile, //or a list of names for multiple files (html5). Default is 'file'
+				// customize how data is added to formData. See #40#issuecomment-28612000 for sample code
+				//formDataAppender: function(formData, key, val){}
+			}).progress(function (evt) {
+				console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+			}).success(function (data, status, headers, config) {
+				// file is uploaded successfully
+				console.log(data);
+			});
+		};
+
+		$scope.sendClassified = function (classified) {
+			var file = $scope.files[0];
+			console.log(file);
+			$scope.upload = $upload.upload({
+				url: 'classifieds', //upload.php script, node.js route, or servlet url
+				//method: 'POST' or 'PUT',
+				//headers: {'header-key': 'header-value'},
+				//withCredentials: true,
+				data: {classified: classified},
+				file: file // or list of files ($files) for html5 only
+				//fileName: 'doc.jpg' or ['1.jpg', '2.jpg', ...] // to modify the name of the file(s)
+				// customize file formData name ('Content-Desposition'), server side file variable name.
+				//fileFormDataName: myFile, //or a list of names for multiple files (html5). Default is 'file'
+				// customize how data is added to formData. See #40#issuecomment-28612000 for sample code
+				//formDataAppender: function(formData, key, val){}
+			}).progress(function (evt) {
+				console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+			}).success(function (data, status, headers, config) {
+				// file is uploaded successfully
+				console.log(data);
+			});
+		};
+
 		// Create new Classified
-		$scope.create = function() {
+		$scope.create = function () {
 			// Create new Classified object
-			var classified = new Classifieds ({
-				name: this.name
+			var classified = new Classifieds({
+				shortDescription: this.shortDescription,
+				longDescription: this.longDescription,
+				price: this.price,
+				category: this.category,
+				family: this.family,
+				instrumentType: this.instrumentType,
+				pics: this.pics,
+				files: this.files
 			});
 
+			$scope.sendClassified(classified);
+
 			// Redirect after save
-			classified.$save(function(response) {
+			/*
+			classified.$save(function (response) {
+
+				$scope.sendFile(response._id);
+
 				$location.path('classifieds/' + response._id);
 
 				// Clear form fields
 				$scope.name = '';
-			}, function(errorResponse) {
+			}, function (errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
+			*/
 		};
 
 		// Remove existing Classified
-		$scope.remove = function(classified) {
-			if ( classified ) {
+		$scope.remove = function (classified) {
+			if (classified) {
 				classified.$remove();
 
 				for (var i in $scope.classifieds) {
@@ -380,36 +442,57 @@ angular.module('classifieds').controller('ClassifiedsController', ['$scope', '$s
 					}
 				}
 			} else {
-				$scope.classified.$remove(function() {
+				$scope.classified.$remove(function () {
 					$location.path('classifieds');
 				});
 			}
 		};
 
 		// Update existing Classified
-		$scope.update = function() {
+		$scope.update = function () {
 			var classified = $scope.classified;
 
-			classified.$update(function() {
+			classified.$update(function () {
 				$location.path('classifieds/' + classified._id);
-			}, function(errorResponse) {
+			}, function (errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
 		};
 
 		// Find a list of Classifieds
-		$scope.find = function() {
+		$scope.find = function () {
 			$scope.classifieds = Classifieds.query();
 		};
 
+		$scope.loadAdditionalInfo = function () {
+			$scope.categories = Categories.query();
+			$scope.families = Families.query();
+		};
+
 		// Find existing Classified
-		$scope.findOne = function() {
+		$scope.findOne = function () {
 			$scope.classified = Classifieds.get({
 				classifiedId: $stateParams.classifiedId
 			});
 		};
+
+		$scope.$watch('family', function (newVal) {
+			if (newVal) $scope.instrumentTypes = InstrumentTypes.query({family: newVal});
+		});
+
+		$scope.$watch('pics', function (newVal) {
+			console.log('pics changed: ' + newVal ? newVal[0] : 'nothing');
+		});
+
+		$scope.$watch('files', function (newVal) {
+			var files = $scope.files;
+			//for (var i = 0; i < files.length; i++) {
+				//$scope.sendFile();
+			//}
+		});
 	}
 ]);
+
 'use strict';
 
 //Classifieds service used to communicate Classifieds REST endpoints
@@ -423,6 +506,7 @@ angular.module('classifieds').factory('Classifieds', ['$resource',
 		});
 	}
 ]);
+
 'use strict';
 
 // Setting up route
@@ -478,7 +562,7 @@ angular.module('core').service('Menus', [
 		// Define the menus object
 		this.menus = {};
 
-		// A private function for rendering decision
+		// A private function for rendering decision 
 		var shouldRender = function(user) {
 			if (user) {
 				if (!!~this.roles.indexOf('*')) {
@@ -695,7 +779,7 @@ angular.module('families').controller('FamiliesController', ['$scope', '$statePa
 
 		// Remove existing Family
 		$scope.remove = function(family) {
-			if ( family ) {
+			if ( family ) { 
 				family.$remove();
 
 				for (var i in $scope.families) {
@@ -728,7 +812,7 @@ angular.module('families').controller('FamiliesController', ['$scope', '$statePa
 
 		// Find existing Family
 		$scope.findOne = function() {
-			$scope.family = Families.get({
+			$scope.family = Families.get({ 
 				familyId: $stateParams.familyId
 			});
 		};
@@ -758,6 +842,7 @@ angular.module('instrumentTypes').run(['Menus',
 		Menus.addSubMenuItem('topbar', 'instrumentTypes', 'New InstrumentType', 'instrumentTypes/create');
 	}
 ]);
+
 'use strict';
 
 //Setting up route
@@ -783,18 +868,20 @@ angular.module('instrumentTypes').config(['$stateProvider',
 		});
 	}
 ]);
+
 'use strict';
 
 // InstrumentTypes controller
-angular.module('instrumentTypes').controller('InstrumentTypesController', ['$scope', '$stateParams', '$location', 'Authentication', 'InstrumentTypes',
-	function($scope, $stateParams, $location, Authentication, InstrumentTypes) {
+angular.module('instrumentTypes').controller('InstrumentTypesController', ['$scope', '$stateParams', '$location', 'Authentication', 'InstrumentTypes', 'Families',
+	function($scope, $stateParams, $location, Authentication, InstrumentTypes, Families) {
 		$scope.authentication = Authentication;
 
 		// Create new InstrumentType
 		$scope.create = function() {
 			// Create new InstrumentType object
 			var instrumentType = new InstrumentTypes ({
-				name: this.name
+				name: this.name,
+				family: this.family
 			});
 
 			// Redirect after save
@@ -841,6 +928,10 @@ angular.module('instrumentTypes').controller('InstrumentTypesController', ['$sco
 			$scope.instrumentTypes = InstrumentTypes.query();
 		};
 
+		$scope.loadAdditionalInfo = function() {
+			$scope.families = Families.query();
+		};
+
 		// Find existing InstrumentType
 		$scope.findOne = function() {
 			$scope.instrumentType = InstrumentTypes.get({
@@ -849,6 +940,7 @@ angular.module('instrumentTypes').controller('InstrumentTypesController', ['$sco
 		};
 	}
 ]);
+
 'use strict';
 
 //InstrumentTypes service used to communicate InstrumentTypes REST endpoints
@@ -862,6 +954,7 @@ angular.module('instrumentTypes').factory('InstrumentTypes', ['$resource',
 		});
 	}
 ]);
+
 'use strict';
 
 // Configuring the Articles module
@@ -901,15 +994,16 @@ angular.module('subcategories').config(['$stateProvider',
 'use strict';
 
 // Subcategories controller
-angular.module('subcategories').controller('SubcategoriesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Subcategories',
-	function($scope, $stateParams, $location, Authentication, Subcategories) {
+angular.module('subcategories').controller('SubcategoriesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Subcategories', 'Categories',
+	function($scope, $stateParams, $location, Authentication, Subcategories, Categories) {
 		$scope.authentication = Authentication;
 
 		// Create new Subcategory
 		$scope.create = function() {
 			// Create new Subcategory object
 			var subcategory = new Subcategories ({
-				name: this.name
+				name: this.name,
+				category: this.category
 			});
 
 			// Redirect after save
@@ -956,14 +1050,20 @@ angular.module('subcategories').controller('SubcategoriesController', ['$scope',
 			$scope.subcategories = Subcategories.query();
 		};
 
+		$scope.loadAdditionalInfo = function() {
+			$scope.categories = Categories.query();
+		};
+
 		// Find existing Subcategory
 		$scope.findOne = function() {
 			$scope.subcategory = Subcategories.get({
 				subcategoryId: $stateParams.subcategoryId
 			});
+			this.loadAdditionalInfo();
 		};
 	}
 ]);
+
 'use strict';
 
 //Subcategories service used to communicate Subcategories REST endpoints
@@ -996,7 +1096,7 @@ angular.module('users').config(['$httpProvider',
 								$location.path('signin');
 								break;
 							case 403:
-								// Add unauthorized behaviour
+								// Add unauthorized behaviour 
 								break;
 						}
 
@@ -1139,7 +1239,7 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 		// If user is not signed in then redirect back home
 		if (!$scope.user) $location.path('/');
 
-		// Check if there are additional accounts
+		// Check if there are additional accounts 
 		$scope.hasConnectedAdditionalSocialAccounts = function(provider) {
 			for (var i in $scope.user.additionalProvidersData) {
 				return true;
@@ -1208,7 +1308,7 @@ angular.module('users').factory('Authentication', ['$window', function($window) 
 	var auth = {
 		user: $window.user
 	};
-
+	
 	return auth;
 }]);
 
