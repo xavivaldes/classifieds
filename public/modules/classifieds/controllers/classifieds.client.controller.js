@@ -9,12 +9,10 @@ angular.module('classifieds').controller('ClassifiedsController', ['$scope', '$u
 			var file = $scope.files[0];
 			console.log(file);
 			$scope.upload = $upload.upload({
-				url: 'classifieds', //upload.php script, node.js route, or servlet url
+				url: 'classifieds',
 				data: {classified: classified},
 				file: file // or list of files ($files) for html5 only
-			}).progress(function (evt) {
-				console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-			}).success(function (data, status, headers, config) {
+			}).success(function (data) {
 				console.log(data);
 				callback(data);
 			});
@@ -89,5 +87,9 @@ angular.module('classifieds').controller('ClassifiedsController', ['$scope', '$u
 				classifiedId: $stateParams.classifiedId
 			});
 		};
+
+		$scope.$watch('family', function (newVal) {
+			if (newVal) $scope.instrumentTypes = InstrumentTypes.query({family: newVal});
+		});
 	}
 ]);
