@@ -1,21 +1,53 @@
 <section data-ng-controller="ClassifiedsController" data-ng-init="findOne()">
-	<div class="page-header">
-		<h1 data-ng-bind="classified.name"></h1>
-	</div>
-	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == classified.user._id))">
-		<a class="btn btn-primary" href="/#!/classifieds/{{classified._id}}/edit">
-			<i class="glyphicon glyphicon-edit"></i>
-		</a>
-		<a class="btn btn-primary" data-ng-click="remove();">
-			<i class="glyphicon glyphicon-trash"></i>
-		</a>
-	</div>
-	<small>
-		<em class="text-muted">
-			Posted on
-			<span data-ng-bind="classified.created | date:'mediumDate'"></span>
-			by
-			<span data-ng-bind="classified.user.displayName"></span>
-		</em>
-	</small>
+    <div class="page-header">
+        <h1 data-ng-bind="classified.name"></h1>
+    </div>
+
+
+    <div>
+        <label>Descripción corta</label>
+        <p data-ng-bind="classified.shortDescription"></p>
+    </div>
+    <div>
+        <label>Descripción</label>
+        <p data-ng-bind="classified.longDescription"></p>
+    </div>
+    <div>
+        <label>Precio</label>
+        <p data-ng-bind="classified.price"></p>
+    </div>
+    <div>
+        <label>Familia</label>
+        <p data-ng-bind="classified.family"></p>
+    </div>
+    <div>
+        <label>Tipo de instrumento</label>
+        <p data-ng-bind="classified.instrumentType"></p>
+    </div>
+    <div>
+        <label>Categoría</label>
+        <p data-ng-bind="classified.category"></p>
+    </div>
+    <div>
+        <label>Imágenes</label>
+        <div data-ng-bind="image"></div>
+    </div>
+
+
+    <div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == classified.user._id))">
+        <a class="btn btn-primary" href="/#!/classifieds/{{classified._id}}/edit">
+            <i class="glyphicon glyphicon-edit"></i>
+        </a>
+        <a class="btn btn-primary" data-ng-click="remove();">
+            <i class="glyphicon glyphicon-trash"></i>
+        </a>
+    </div>
+    <small>
+        <em class="text-muted">
+            Posted on
+            <span data-ng-bind="classified.created | date:'mediumDate'"></span>
+            by
+            <span data-ng-bind="classified.user.displayName"></span>
+        </em>
+    </small>
 </section>

@@ -12,10 +12,8 @@ module.exports = function(app) {
 		.get(classifieds.list)
 		.post(users.requiresLogin, multipartyMiddleware, classifieds.create);
 
-	app.route('/classifieds/pic')
-		.post(users.requiresLogin, multipartyMiddleware, function(req) {
-			console.log(req.body, req.files);
-		});
+	app.route('/classifieds/:classifiedId/pic')
+		.get(classifieds.readPic);
 
 	app.route('/classifieds/:classifiedId')
 		.get(classifieds.read)
