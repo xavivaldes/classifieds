@@ -45,8 +45,13 @@ module.exports = {
 			css: [
 				'public/lib/bootstrap/dist/css/bootstrap.css',
 				'public/lib/bootstrap/dist/css/bootstrap-theme.css',
+				'public/css/arrow.css',
+				'public/css/parallax.css',
+				'public/css/style.css',
+				'public/css/navbar.css'
 			],
 			js: [
+				'public/lib/jquery/dist/jquery.js',
 				'public/lib/angular/angular.js',
 				'public/lib/angular-i18n/angular-locale_es-es.js',
 				'public/lib/angular-resource/angular-resource.js',
@@ -55,7 +60,9 @@ module.exports = {
 				'public/lib/angular-ui-utils/ui-utils.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
 				'public/lib/ng-file-upload/angular-file-upload.js',
-				'public/lib/ng-file-upload-shim/angular-file-upload-shim.js'
+				'public/lib/ng-file-upload-shim/angular-file-upload-shim.js',
+				'public/lib/classifieds/classifieds.js',
+				'public/lib/classifieds/navbar.js'
 			]
 		},
 		css: [

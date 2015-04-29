@@ -24,6 +24,7 @@ module.exports = {
 				'public/lib/bootstrap/dist/css/bootstrap-theme.min.css',
 			],
 			js: [
+				'public/lib/jquery/dist/jquery.min.js',
 				'public/lib/angular/angular.min.js',
 				'public/lib/angular-i18n/angular-locale_es-es.js',
 				'public/lib/angular-resource/angular-resource.min.js',

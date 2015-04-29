@@ -1,0 +1,119 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700,300);
+body {
+    min-height: 2000px;
+    font-family: 'Open Sans','Helvetica Neue',Helvetica;
+    color: #88847B;
+    -webkit-font-smoothing: antialiased;
+    text-align: justify;
+    text-justify: inter-word;
+    background-color: #F8F5E2;
+}
+
+a:hover { text-decoration: none }
+
+body .btn-white {
+    color: #fff !important;
+    border-color: #fff !important;
+}
+
+body .btn-default {
+    color: #88847B;
+    border-color: #88847B;
+}
+
+.btn-trans {
+    border-style: none !important;
+}
+
+.row {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.simple-search {
+    text-align: center;
+}
+
+body .navbar-toggle .icon-bar {
+    background: #FFF;
+    height: 4px;
+}
+
+.js-masonry {
+  margin: 0 auto;
+}
+
+.img-top-rounded {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.add-footer {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  background-color: white;
+}
+
+.add-cell {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,.1),0 2px 5px 0 transparent;
+}
+
+.add-footer {
+    text-align: center;
+}
+
+.add-footer > .price {
+    font-size: 150%;
+    color: rgba(247, 134, 32, 1);
+}
+
+/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+.item {
+  margin-bottom: 20px;
+  max-width: 180px;
+}
+
+.item > img {
+  max-width: 180px;
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    .item {
+      margin-bottom: 20px;
+      max-width: 200px;
+    }
+
+    .item > img {
+      max-width: 200px;
+    }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    .item {
+      margin-bottom: 20px;
+      max-width: 250px;
+    }
+
+    .item > img {
+      max-width: 250px;
+    }
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .item {
+      margin-bottom: 20px;
+      max-width: 300px;
+    }
+
+    .item > img {
+      max-width: 300px;
+    }
+}
