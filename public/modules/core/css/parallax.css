@@ -4,7 +4,7 @@
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
-  background-image: url("../img/background.jpg");
+  background-image: url("/modules/core/img/background.jpg");
   text-align: center;
   color: white;
 }
