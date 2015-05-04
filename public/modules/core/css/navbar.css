@@ -11,7 +11,10 @@
   opacity: 1;
 }
 
-body .navbar.navbar-fixed-top { margin-bottom: 0 }
+body .navbar.navbar-fixed-top {
+    margin-bottom: 0;
+    border: 0px;
+}
 body .navbar {
     background: 0 0;
     -webkit-transition: background .4s ease;
@@ -21,7 +24,7 @@ body .navbar {
 }
 body .navbar .navbar-header a { color: #fff; }
 body .navbar-nav>li>a {
-    color: #fff;
+    color: #fff !important;
     text-transform: uppercase;
     font-size: 12px;
     font-weight: 700;

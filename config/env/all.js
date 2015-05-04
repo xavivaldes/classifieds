@@ -44,11 +44,7 @@ module.exports = {
 		lib: {
 			css: [
 				'public/lib/bootstrap/dist/css/bootstrap.css',
-				'public/lib/bootstrap/dist/css/bootstrap-theme.css',
-				'public/css/arrow.css',
-				'public/css/parallax.css',
-				'public/css/style.css',
-				'public/css/navbar.css'
+				'public/lib/bootstrap/dist/css/bootstrap-theme.css'
 			],
 			js: [
 				'public/lib/jquery/dist/jquery.js',
@@ -60,9 +56,7 @@ module.exports = {
 				'public/lib/angular-ui-utils/ui-utils.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
 				'public/lib/ng-file-upload/angular-file-upload.js',
-				'public/lib/ng-file-upload-shim/angular-file-upload-shim.js',
-				'public/lib/classifieds/classifieds.js',
-				'public/lib/classifieds/navbar.js'
+				'public/lib/ng-file-upload-shim/angular-file-upload-shim.js'
 			]
 		},
 		css: [

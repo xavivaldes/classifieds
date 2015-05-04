@@ -19,6 +19,7 @@ body .btn-white {
 body .btn-default {
     color: #88847B;
     border-color: #88847B;
+    text-shadow: none;
 }
 
 .btn-trans {
