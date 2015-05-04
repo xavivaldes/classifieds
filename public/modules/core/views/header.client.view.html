@@ -11,9 +11,36 @@
                 <img class="logo-menu" src="modules/core/img/brand/logo-small.png"/>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a class="btn btn-trans" href="#">Únete</a></li>
-                    <li><a class="btn btn-white" href="#">Entra</a></li>
+                <ul class="nav navbar-nav navbar-right" data-ng-hide="authentication.user">
+                    <li ui-route="/signin" ng-class="{active: $uiRoute}">
+                        <a class="btn btn-trans" href="/#!/signin">Entra</a>
+                    </li>
+                    <li class="divider-vertical"></li>
+                    <li ui-route="/signup" ng-class="{active: $uiRoute}">
+                        <a class="btn btn-white" href="/#!/signup">Únete</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right" data-ng-show="authentication.user">
+                    <li class="dropdown" dropdown>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle>
+                            <span data-ng-bind="authentication.user.displayName"></span> <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/#!/settings/profile">Edit Profile</a>
+                            </li>
+                            <li>
+                                <a href="/#!/settings/accounts">Manage Social Accounts</a>
+                            </li>
+                            <li data-ng-show="authentication.user.provider === 'local'">
+                                <a href="/#!/settings/password">Change Password</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="/auth/signout">Signout</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
             <!--/.nav-collapse -->
