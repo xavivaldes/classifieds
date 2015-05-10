@@ -1,7 +1,15 @@
-var oldWidth = getWindowWidth();
+var oldWidth = 0;
+
+var MAX_WIDTH = 1200;
+var MED_WIDTH = 992;
+var MIN_WIDTH = 768;
 
 function getContainerWidth() {
-	return $('#masonry-container').width();
+	var winWidth = getWindowWidth();
+	if (winWidth >= MAX_WIDTH) return 1170;
+	if (winWidth >= MED_WIDTH) return 970;
+	if (winWidth >= MIN_WIDTH) return 750;
+	return winWidth;
 }
 
 function getWindowWidth() {
@@ -17,19 +25,19 @@ function calcGutter() {
 
 function executeMasonry() {
 	setTimeout(function () {
-		var width = getContainerWidth();
+		var width = getWindowWidth();
 		if (Math.abs(getWindowWidth() - oldWidth) > 10) {
 			/* Small devices (tablets, 768px and up) */
 			/* Medium devices (desktops, 992px and up) */
 			/* Large devices (large desktops, 1200px and up) */
-			if (width < 768) {
-				setNumOfCols(3);
-			} else if (width < 992) {
+			if (width >= MAX_WIDTH) {
+				setNumOfCols(5);
+			} else if (width >= MED_WIDTH) {
+				setNumOfCols(5);
+			} else if (width >= MIN_WIDTH) {
 				setNumOfCols(4);
-			} else if (width < 1200) {
-				setNumOfCols(5);
 			} else {
-				setNumOfCols(5);
+				setNumOfCols(3);
 			}
 			$('#masonry-container').masonry({
 				columnWidth: ".item",
@@ -50,8 +58,8 @@ $(window).resize(executeMasonry);
 function setNumOfCols(cols) {
 	var width = getContainerWidth();
 	//alert(cols + ',' + width);
-	var imgWidth = Math.max(Math.round(width / cols - calcGutter()), 120);
-	console.log(imgWidth);
+	var imgWidth = Math.max(Math.round(width / cols - calcGutter() * 2), 120);
+	console.log('cols: ' + cols + ' imgW: ' + imgWidth + ' contW: ' + width);
 	$('.item').css('max-width', imgWidth + 'px');
 	$('.item > img').css('max-width', imgWidth + 'px');
 }
