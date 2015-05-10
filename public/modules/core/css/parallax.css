@@ -1,53 +1,65 @@
 .parallax {
-  height: 100vh;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-  background-image: url("/modules/core/img/background.jpg");
-  text-align: center;
-  color: white;
+	height: 100vh;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-size: cover;
+	background-image: url("/modules/core/img/background.jpg");
+	text-align: center;
+	color: white;
 }
 
 .parallax .title {
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
-.parallax #imgfoot {
-  top: 0px;
-  right: 0px;
-  position: absolute;
-  font-size: 10px;
+.parallax .imgfoot {
+	top: 0;
+	right: 0;
+	position: absolute;
+	font-size: 10px;
 }
 
-.parallax #imgfoot a {
-  color: white;
+.parallax .imgfoot a {
+	color: white;
 }
 
 .color-layer {
-  height: 100%;
-  width: 100%;
-  background-color: rgba(247, 134, 32, 0.60);
+	height: 100%;
+	width: 100%;
+	background-color: #F78620;
+	background-color: rgba(247, 134, 32, 0.60);
 }
 
-.parallax h1, .parallax h2{
-  color: white;
-  margin-top: 0px;
+.parallax h1, .parallax h2 {
+	color: white;
+	margin-top: 0;
 }
 
 .parallax h1 {
-  font-size: 73px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
-  display: inline-block;
-  font-weight: 700;
-  font-family: "Font Bold", sans-serif;
+	font-size: 73px;
+	padding-bottom: 20px;
+	border-bottom: #FFFFFF;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+	display: inline-block;
+	font-weight: 700;
+	font-family: "Font Bold", sans-serif;
 }
 
 .parallax h2 {
-  font-weight: 300;
-  font-family: "Font Light", sans-serif;
-  font-size: 38px;
+	font-weight: 300;
+	font-family: "Font Light", sans-serif;
+	font-size: 38px;
+}
+
+.container-parallax {
+	width: 100%;
+	padding: 0;
+}
+
+.no-lateral-padding {
+	padding-left: 0;
+	padding-right: 0;
 }

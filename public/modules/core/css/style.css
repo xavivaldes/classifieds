@@ -69,7 +69,7 @@ body .navbar-toggle .icon-bar {
 
 .add-footer > .price {
     font-size: 150%;
-    color: rgba(247, 134, 32, 1);
+    color: #F78620;
 }
 
 /* Extra small devices (phones, less than 768px) */
@@ -81,40 +81,4 @@ body .navbar-toggle .icon-bar {
 
 .item > img {
   max-width: 180px;
-}
-
-/* Small devices (tablets, 768px and up) */
-@media (min-width: 768px) {
-    .item {
-      margin-bottom: 20px;
-      max-width: 200px;
-    }
-
-    .item > img {
-      max-width: 200px;
-    }
-}
-
-/* Medium devices (desktops, 992px and up) */
-@media (min-width: 992px) {
-    .item {
-      margin-bottom: 20px;
-      max-width: 250px;
-    }
-
-    .item > img {
-      max-width: 250px;
-    }
-}
-
-/* Large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {
-    .item {
-      margin-bottom: 20px;
-      max-width: 300px;
-    }
-
-    .item > img {
-      max-width: 300px;
-    }
 }
