@@ -457,8 +457,10 @@ function setNumOfCols(cols) {
 	//alert(cols + ',' + width);
 	var imgWidth = Math.max(Math.round(width / cols - calcGutter() * 2), 120);
 	console.log('cols: ' + cols + ' imgW: ' + imgWidth + ' contW: ' + width);
+	$('.item').css('min-width', imgWidth + 'px');
 	$('.item').css('max-width', imgWidth + 'px');
 	$('.item > img').css('max-width', imgWidth + 'px');
+	$('.item > img').css('min-width', imgWidth + 'px');
 }
 
 window.onscroll = function () {
