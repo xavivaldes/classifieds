@@ -421,30 +421,33 @@ function calcGutter() {
 }
 
 function executeMasonry() {
-	setTimeout(function () {
-		var width = getWindowWidth();
-		if (Math.abs(getWindowWidth() - oldWidth) > 10) {
-			/* Small devices (tablets, 768px and up) */
-			/* Medium devices (desktops, 992px and up) */
-			/* Large devices (large desktops, 1200px and up) */
-			if (width >= MAX_WIDTH) {
-				setNumOfCols(5);
-			} else if (width >= MED_WIDTH) {
-				setNumOfCols(5);
-			} else if (width >= MIN_WIDTH) {
-				setNumOfCols(4);
-			} else {
-				setNumOfCols(3);
-			}
-			$('#masonry-container').masonry({
-				columnWidth: ".item",
-				itemSelector: ".item",
-				isFitWidth: true,
-				gutter: calcGutter()
-			});
-			oldWidth = getWindowWidth();
+	var width = getWindowWidth();
+	if (Math.abs(getWindowWidth() - oldWidth) > 10) {
+		/* Small devices (tablets, 768px and up) */
+		/* Medium devices (desktops, 992px and up) */
+		/* Large devices (large desktops, 1200px and up) */
+		if (width >= MAX_WIDTH) {
+			setNumOfCols(5);
+		} else if (width >= MED_WIDTH) {
+			setNumOfCols(5);
+		} else if (width >= MIN_WIDTH) {
+			setNumOfCols(4);
+		} else {
+			setNumOfCols(3);
 		}
-	}, 200);
+		var container = document.querySelector('#masonry-container');
+		imagesLoaded(container, function () {
+			setTimeout(function() {
+				new Masonry(container, {
+					columnWidth: ".item",
+					itemSelector: ".item",
+					isFitWidth: true,
+					gutter: calcGutter()
+				});
+			}, 200);
+		});
+		oldWidth = getWindowWidth();
+	}
 }
 
 // initialize Masonry after all images have loaded
