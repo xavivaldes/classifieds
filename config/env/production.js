@@ -34,7 +34,8 @@ module.exports = {
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.min.js',
 				'public/lib/ng-file-upload/angular-file-upload.min.js',
 				'public/lib/ng-file-upload-shim/angular-file-upload-shim.min.js',
-				'public/lib/masonry/dist/masonry.pkgd.min.js'
+				'public/lib/masonry/dist/masonry.pkgd.min.js',
+				'public/lib/imagesloaded/imagesloaded.pkgd.min.js'
 			]
 		},
 		css: 'public/dist/application.min.css',
