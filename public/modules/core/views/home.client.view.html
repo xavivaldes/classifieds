@@ -56,6 +56,24 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12">
+			<div class="js-masonry masonry">
+				<div masonryitem class="add-cell masonry-brick item" style="max-width: 200px;" data-ng-repeat="classified in classifieds">
+					<img class="img-top-rounded" src="data:{{classified.pic.contentType}};base64,{{classified.pic.data}}" style="max-width: 200px;" />
+					<div class="add-footer">
+						<div class="price">
+							{{classified.price}}€
+						</div>
+						<div class="description">
+							{{classified.shortDescription}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--
+	<div class="row">
+		<div class="col-md-12">
 			<div id="masonry-container" class="js-masonry">
 				<div data-ng-repeat="classified in classifieds" class="item add-cell">
 					<img class="img-top-rounded" src="data:{{classified.pic.contentType}};base64,{{classified.pic.data}}"/>
@@ -71,4 +89,5 @@
 			</div>
 		</div>
 	</div>
+	-->
 </div>
