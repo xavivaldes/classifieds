@@ -1,27 +1,29 @@
-<section data-ng-controller="SubcategoriesController" data-ng-init="findOne()">
-	<div class="page-header">
-		<h1 data-ng-bind="subcategory.name"></h1>
-	</div>
-	<div class="col-md-12">
-		<fieldset>
-			<label class="control-label">Categoría</label>
-			<p data-ng-bind="subcategory.category.name"></p>
-		</fieldset>
-	</div>
-	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == subcategory.user._id))">
-		<a class="btn btn-primary" href="/#!/subcategories/{{subcategory._id}}/edit">
-			<i class="glyphicon glyphicon-edit"></i>
-		</a>
-		<a class="btn btn-primary" data-ng-click="remove();">
-			<i class="glyphicon glyphicon-trash"></i>
-		</a>
-	</div>
-	<small>
-		<em class="text-muted">
-			Creado el
-			<span data-ng-bind="subcategory.created | date:'mediumDate'"></span>
-			por
-			<span data-ng-bind="subcategory.user.displayName"></span>
-		</em>
-	</small>
-</section>
+<div class="container menu-spaced">
+	<section data-ng-controller="SubcategoriesController" data-ng-init="findOne()">
+		<div class="page-header">
+			<h1 data-ng-bind="subcategory.name"></h1>
+		</div>
+		<div class="col-md-12">
+			<fieldset>
+				<label class="control-label">Categoría</label>
+				<p data-ng-bind="subcategory.category.name"></p>
+			</fieldset>
+		</div>
+		<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == subcategory.user._id))">
+			<a class="btn btn-primary" href="/#!/subcategories/{{subcategory._id}}/edit">
+				<i class="glyphicon glyphicon-edit"></i>
+			</a>
+			<a class="btn btn-primary" data-ng-click="remove();">
+				<i class="glyphicon glyphicon-trash"></i>
+			</a>
+		</div>
+		<small>
+			<em class="text-muted">
+				Creado el
+				<span data-ng-bind="subcategory.created | date:'mediumDate'"></span>
+				por
+				<span data-ng-bind="subcategory.user.displayName"></span>
+			</em>
+		</small>
+	</section>
+</div>

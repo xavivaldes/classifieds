@@ -1,31 +1,31 @@
 <div class="parallax">
-    <div class="color-layer">
-        <div class="title container">
-            <div class="row">
-                <div class="col-md-12">
-                    <img src="modules/core/img/brand/logo-symbol-large.png" class="img-responsive center-block"/>
-                </div>
-            </div>
-            <form>
-                <div class="row">
-                    <div class="col-md-3 col-sm-2 col-xs-12"></div>
-                    <div class="col-md-6 col-sm-8 col-xs-12">
-                        <div class="input-group">
-                            <input type="text" class="form-control simple-search" id="exampleInputEmail1"
-                                   placeholder="Piano Barcelona"/>
+	<div class="color-layer">
+		<div class="title container">
+			<div class="row">
+				<div class="col-md-12">
+					<img src="modules/core/img/brand/logo-symbol-large.png" class="img-responsive center-block"/>
+				</div>
+			</div>
+			<form>
+				<div class="row">
+					<div class="col-md-3 col-sm-2 col-xs-12"></div>
+					<div class="col-md-6 col-sm-8 col-xs-12">
+						<div class="input-group">
+							<input type="text" class="form-control simple-search" id="exampleInputEmail1"
+								   placeholder="Piano Barcelona"/>
                             <span class="input-group-btn">
                                 <button type="submit" class="btn btn-default btn-white">Busca</button>
                             </span>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-2 col-xs-12"></div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="arrow bounce">
-    </div>
-    <!--
+						</div>
+					</div>
+					<div class="col-md-3 col-sm-2 col-xs-12"></div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="arrow bounce">
+	</div>
+	<!--
     <div class="imgfoot">
         <p>By NASA, ESA, M. Robberto (Space Telescope Science Institute/ESA) and the Hubble Space Telescope Orion
             Treasury Project Team [Public domain], <a
@@ -45,10 +45,18 @@
 							<input type="text" class="form-control input-sm" id="description" placeholder="Descripción">
 						</div>
 						<div class="form-group">
-							<label class="sr-only" for="exampleInputEmail3">Email address</label>
-							<input type="text" class="form-control input-sm" id="exampleInputEmail3" placeholder="Enter email">
+							<label class="sr-only" for="exampleInputEmail3"></label>
+							<input type="text" class="form-control input-sm" id="exampleInputEmail3"
+								   placeholder="Enter email">
 						</div>
-						<button type="submit" class="btn btn-default">Busca</button>
+						<div class="form-group">
+							<label class="sr-only" for="exampleInputEmail3">Email address</label>
+
+							<div class="ng-valid ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all ng-dirty"
+								 ng-model="demoVals.sliderExample9" use-decimals="" step="0.01" max="1.00" min="-1.00"
+								 ui-slider="{range: true}" aria-disabled="false">
+							</div>
+							<button type="submit" class="btn btn-default">Busca</button>
 					</form>
 				</div>
 			</div>
@@ -57,17 +65,21 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="js-masonry masonry">
-				<div masonryitem class="add-cell masonry-brick item" style="max-width: 200px;" data-ng-repeat="classified in classifieds">
-					<img class="img-top-rounded" src="data:{{classified.pic.contentType}};base64,{{classified.pic.data}}" style="max-width: 200px;" />
-					<div class="add-footer">
-						<div class="price">
-							{{classified.price}}€
-						</div>
-						<div class="description">
-							{{classified.shortDescription}}
+				<a href="#!/classifieds/{{classified._id}}" data-ng-repeat="classified in classifieds">
+					<div masonryitem class="box-shadow masonry-brick item">
+						<img class="img-top-rounded"
+							 src="data:{{classified.pic.contentType}};base64,{{classified.pic.data}}"/>
+
+						<div class="add-footer">
+							<div class="price">
+								{{classified.price}}€
+							</div>
+							<div class="description">
+								{{classified.shortDescription}}
+							</div>
 						</div>
 					</div>
-				</div>
+				</a>
 			</div>
 		</div>
 	</div>

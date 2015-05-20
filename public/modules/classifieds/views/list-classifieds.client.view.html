@@ -1,19 +1,27 @@
-<section data-ng-controller="ClassifiedsController" data-ng-init="find()">
-    <div class="page-header">
-        <h1>Classifieds</h1>
-    </div>
-    <div class="list-group">
-        <a data-ng-repeat="classified in classifieds" data-ng-href="#!/classifieds/{{classified._id}}" class="list-group-item">
-			<small class="list-group-item-text">
-				Posted on
-				<span data-ng-bind="classified.created | date:'medium'"></span>
-				by
-				<span data-ng-bind="classified.user.displayName"></span>
-			</small>
-			<h4 class="list-group-item-heading" data-ng-bind="classified.name"></h4>
-        </a>
-    </div>
-    <div class="alert alert-warning text-center" data-ng-hide="!classifieds.$resolved || classifieds.length">
-    	No Classifieds yet, why don't you <a href="/#!/classifieds/create">create one</a>?
-    </div>
-</section>
+<div class="container menu-spaced">
+	<section data-ng-controller="ClassifiedsController" data-ng-init="find()">
+		<div class="page-header">
+			<h1>Classifieds</h1>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="js-masonry masonry">
+					<div masonryitem class="add-cell masonry-brick item" data-ng-repeat="classified in classifieds">
+						<img class="img-top-rounded" src="data:{{classified.pic.contentType}};base64,{{classified.pic.data}}"/>
+						<div class="add-footer">
+							<div class="price">
+								{{classified.price}}€
+							</div>
+							<div class="description">
+								{{classified.shortDescription}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="alert alert-warning text-center" data-ng-hide="!classifieds.$resolved || classifieds.length">
+			No Classifieds yet, why don't you <a href="/#!/classifieds/create">create one</a>?
+		</div>
+	</section>
+</div>
