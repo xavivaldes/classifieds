@@ -39,24 +39,53 @@
 		<div class="col-md-12">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<form class="form-inline">
+					<form class="form-inline" ng-submit="search()">
 						<div class="form-group">
-							<label class="sr-only" for="exampleInputEmail3">Descripción</label>
-							<input type="text" class="form-control input-sm" id="description" placeholder="Descripción">
+							<label class="sr-only" for="description">Descripción</label>
+							<input type="text" ng-model="filter.description" class="form-control input-sm" id="description" placeholder="Descripción">
 						</div>
 						<div class="form-group">
-							<label class="sr-only" for="exampleInputEmail3"></label>
-							<input type="text" class="form-control input-sm" id="exampleInputEmail3"
-								   placeholder="Enter email">
+							<label class="sr-only" for="category">Categoría</label>
+							<select class="form-control input-sm" ng-model="filter.category" id="category"
+									class="form-control"
+									ng-options="category._id as category.name for category in categories">
+								<option value="" selected>Todas las categorías</option>
+							</select>
 						</div>
-						<div class="form-group">
-							<label class="sr-only" for="exampleInputEmail3">Email address</label>
 
-							<div class="ng-valid ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all ng-dirty"
-								 ng-model="demoVals.sliderExample9" use-decimals="" step="0.01" max="1.00" min="-1.00"
-								 ui-slider="{range: true}" aria-disabled="false">
+
+						<div class="form-group">
+							<label class="sr-only" for="family">Familia</label>
+
+							<div class="controls">
+								<select class="form-control input-sm" ng-model="filter.family" id="family" class="form-control"
+										ng-options="family._id as family.name for family in families">
+									<option value="" selected>Todas las familias</option>
+								</select>
 							</div>
-							<button type="submit" class="btn btn-default">Busca</button>
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="instrumentType">Tipo de instrumento</label>
+
+							<div class="controls">
+								<select class="form-control input-sm" ng-model="filter.instrumentType"
+										ng-disabled="!instrumentTypes" id="instrumentType" class="form-control"
+										ng-options="instrumentType._id as instrumentType.name for instrumentType in instrumentTypes">
+									<option value="" selected>Todos los tipos de instrumento</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="sr-only" for="prices">Precio</label>
+
+							<div id="prices" class="ng-valid ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all ng-dirty"
+								 ng-model="filter.prices" step="5" max="5000" min="0"
+								 ui-slider="{range: true}"/>
+							<p ng-show="filter.prices">Precio entre {{filter.prices[0]}} y {{filter.prices[1]}}</p>
+							<p ng-show="!filter.prices">Precio no filtrado</p>
+						</div>
+						<button type="submit" class="btn btn-default">Busca</button>
 					</form>
 				</div>
 			</div>

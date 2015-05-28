@@ -21,10 +21,12 @@ module.exports = {
 		lib: {
 			css: [
 				'public/lib/bootstrap/dist/css/bootstrap.min.css',
-				'public/lib/bootstrap/dist/css/bootstrap-theme.min.css',
+				'public/lib/bootstrap/dist/css/bootstrap-theme.min.css',,
+				'public/lib/jquery-ui/themes/base/jquery-ui.css'
 			],
 			js: [
 				'public/lib/jquery/dist/jquery.min.js',
+				'public/lib/jquery-ui/jquery-ui.min.js',
 				'public/lib/angular/angular.min.js',
 				'public/lib/angular-i18n/angular-locale_es-es.js',
 				'public/lib/angular-resource/angular-resource.min.js',
