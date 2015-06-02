@@ -103,6 +103,10 @@ body .navbar-toggle .icon-bar {
 	margin-top: 50px;
 }
 
+.menu-search-spaced {
+	margin-top: 150px;
+}
+
 .container-fluid.ng-scope.fixed-top {
 	position: fixed;
 	top: 70px;
