@@ -71,7 +71,7 @@ ApplicationConfiguration.registerModule('searches');
 'use strict';
 
 // Use applicaion configuration module to register a new module
-//ApplicationConfiguration.registerModule('subcategories');
+ApplicationConfiguration.registerModule('subcategories');
 
 'use strict';
 
