@@ -86,13 +86,22 @@ angular.module('classifieds').controller('ClassifiedsController', ['$scope', '$u
             $scope.classified = Classifieds.get({
                 classifiedId: $stateParams.classifiedId
             });
-            //console.log($scope.classified); <-- es una promise...
-            $scope.image = 'data:' + $scope.classified.pic.contentType + ';base64,' + $scope.classified.pic.data;
+			$scope.loadAdditionalInfo();
         };
+
+		$scope.$watch('classified.pic', function () {
+			if ($scope.classified.pic && document.getElementById('image-preview')) {
+				document.getElementById('image-preview').innerHTML = '<img class="img-responsive" src="data:' + $scope.classified.pic.contentType + ';base64,' + $scope.classified.pic.data + '"/>';
+			}
+		});
 
         $scope.$watch('family', function (newVal) {
             if (newVal) $scope.instrumentTypes = InstrumentTypes.query({family: newVal});
         });
+
+		$scope.$watch('classified.family', function (newVal) {
+			if (newVal) $scope.instrumentTypes = InstrumentTypes.query({family: newVal});
+		});
 
         $scope.$watch('files', function () {
             if ($scope.files && $scope.files.length > 0) {
@@ -100,7 +109,7 @@ angular.module('classifieds').controller('ClassifiedsController', ['$scope', '$u
 
                 fileReader.onload = function (fileLoadedEvent) {
                     console.log(fileLoadedEvent.target.result);
-                    document.getElementById('image-preview').innerHTML = '<img src="' + fileLoadedEvent.target.result + '"/>';
+                    document.getElementById('image-preview').innerHTML = '<img class="img-responsive" src="' + fileLoadedEvent.target.result + '"/>';
                 };
                 fileReader.readAsDataURL($scope.files[0]);
             }

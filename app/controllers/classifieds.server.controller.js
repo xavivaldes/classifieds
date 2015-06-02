@@ -105,21 +105,22 @@ exports.list = function (req, res) {
 	}
 	console.log(filter);
 	Classified.find(filter).sort('-created').populate('user', 'displayName').exec(function (err, classifieds) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(classifieds);
-		}
-	});
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				res.jsonp(classifieds);
+			}
+		});
 };
 
 /**
  * Classified middleware
  */
 exports.classifiedByID = function (req, res, next, id) {
-	Classified.findById(id).populate('user', 'displayName').exec(function (err, classified) {
+	Classified.findById(id).populate('user', 'displayName').populate('category', 'name').populate('instrumentType', 'name')
+		.populate('family', 'name').exec(function (err, classified) {
 		if (err) return next(err);
 		if (!classified) return next(new Error('Failed to load Classified ' + id));
 		req.classified = classified;

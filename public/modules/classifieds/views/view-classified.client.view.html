@@ -1,9 +1,5 @@
 <div class="container menu-spaced">
 	<section data-ng-controller="ClassifiedsController" data-ng-init="findOne()">
-		<div class="page-header">
-			<h1 data-ng-bind="classified.shortDescription"></h1>
-		</div>
-
 		<div class="row">
 			<div class="col-md-6">
 				<div class="box-shadow">
@@ -26,17 +22,17 @@
 						<div>
 							<label>Familia</label>
 
-							<p data-ng-bind="classified.family"></p>
+							<p data-ng-bind="classified.family.name"></p>
 						</div>
 						<div>
 							<label>Tipo de instrumento</label>
 
-							<p data-ng-bind="classified.instrumentType"></p>
+							<p data-ng-bind="classified.instrumentType.name"></p>
 						</div>
 						<div>
 							<label>Categoría</label>
 
-							<p data-ng-bind="classified.category"></p>
+							<p data-ng-bind="classified.category.name"></p>
 						</div>
 						<div>
 							<label>Usuario</label>

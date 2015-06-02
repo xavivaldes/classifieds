@@ -1,7 +1,7 @@
 <div class="container menu-spaced">
 	<section data-ng-controller="ClassifiedsController" data-ng-init="loadAdditionalInfo()">
 		<div class="page-header">
-			<h1>New Classified</h1>
+			<h1>Nuevo anuncio</h1>
 		</div>
 		<div class="col-md-12">
 			<form class="form-horizontal" data-ng-submit="create()" novalidate>
@@ -15,13 +15,13 @@
 					<div class="form-group">
 						<label class="control-label" for="longDescription">Descripción</label>
 						<div class="controls">
-							<input type="text" data-ng-model="longDescription" id="longDescription" class="form-control" placeholder="Name" required>
+							<textarea data-ng-model="longDescription" id="longDescription" class="form-control" placeholder="Descripción" required/>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="control-label" for="price">Precio</label>
 						<div class="controls">
-							<input type="number" data-ng-model="price" id="price" class="form-control" placeholder="Name" required>
+							<input type="number" data-ng-model="price" id="price" class="form-control" placeholder="Precio" required>
 						</div>
 					</div>
 					<div class="form-group">

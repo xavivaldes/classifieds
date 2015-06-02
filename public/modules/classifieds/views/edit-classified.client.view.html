@@ -1,15 +1,55 @@
 <div class="container menu-spaced">
 	<section data-ng-controller="ClassifiedsController" data-ng-init="findOne()">
 		<div class="page-header">
-			<h1>Edit Classified</h1>
+			<h1>Editar anuncio</h1>
 		</div>
 		<div class="col-md-12">
 			<form class="form-horizontal" data-ng-submit="update()" novalidate>
 				<fieldset>
 					<div class="form-group">
-						<label class="control-label" for="name">Name</label>
+						<label class="control-label" for="shortDescription">Descripción corta</label>
 						<div class="controls">
-							<input type="text" data-ng-model="classified.name" id="name" class="form-control" placeholder="Name" required>
+							<input type="text" data-ng-model="classified.shortDescription" id="shortDescription" class="form-control" placeholder="Descripción corta" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="longDescription">Descripción</label>
+						<div class="controls">
+							<textarea data-ng-model="classified.longDescription" id="longDescription" class="form-control" placeholder="Descripción" required/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="price">Precio</label>
+						<div class="controls">
+							<input type="number" data-ng-model="classified.price" id="price" class="form-control" placeholder="Precio" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="family">Familia</label>
+						<div class="controls">
+							<select class="form-control" data-ng-model="classified.family" id="family" class="form-control" ng-options="family._id as family.name for family in families" required>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="instrumentType">Tipo de instrumento</label>
+						<div class="controls">
+							<select class="form-control" data-ng-model="classified.instrumentType" id="instrumentType" class="form-control" ng-options="instrumentType._id as instrumentType.name for instrumentType in instrumentTypes" required>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="category">Categoría</label>
+						<div class="controls">
+							<select class="form-control" data-ng-model="classified.category" id="category" class="form-control" ng-options="category._id as category.name for category in categories" required>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label">Imágenes</label>
+						<div class="controls">
+							<button type="button" ng-file-select ng-model="classified.files">Sube una imagen</button>
+							<div id="image-preview"></div>
 						</div>
 					</div>
 					<div class="form-group">
