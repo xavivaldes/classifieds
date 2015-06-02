@@ -67,6 +67,10 @@ ApplicationConfiguration.registerModule('instrumentTypes');
 'use strict';
 
 // Use applicaion configuration module to register a new module
+ApplicationConfiguration.registerModule('searches');
+'use strict';
+
+// Use applicaion configuration module to register a new module
 ApplicationConfiguration.registerModule('subcategories');
 'use strict';
 
@@ -408,7 +412,7 @@ function calcGutter() {
 }
 
 function executeMasonry() {
-	setTimeout(function() {
+	setTimeout(function () {
 		var width = getWindowWidth();
 		var gutter = 0;
 		if (Math.abs(getWindowWidth() - oldWidth) > 10) {
@@ -461,8 +465,8 @@ function setWidth(width) {
 
 $(window).resize(executeMasonry);
 
-angular.module('core').controller('HomeController', ['$scope', 'Authentication', 'Classifieds', 'Categories', 'Families', 'InstrumentTypes',
-	function ($scope, Authentication, Classifieds, Categories, Families, InstrumentTypes) {
+angular.module('core').controller('HomeController', ['$scope', '$rootScope', 'Authentication', 'Classifieds', 'Categories', 'Families', 'InstrumentTypes',
+	function ($scope, $rootScope, Authentication, Classifieds, Categories, Families, InstrumentTypes) {
 		// This provides Authentication context.
 		$scope.authentication = Authentication;
 
@@ -483,6 +487,17 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 		$scope.search = function () {
 			$scope.classifieds = Classifieds.query($scope.filter);
 		};
+
+		$rootScope.$on('$stateChangeStart',
+			function (event, toState, toParams, fromState, fromParams) {
+				showNavbar(toState.name != 'home');
+				/*
+				if (toState.name !== 'login' && !UsersService.getCurrentUser()) {
+					event.preventDefault();
+					$state.go('login');
+				}
+				*/
+			});
 	}
 ]).directive('masonryitem', function () {
 	return {
@@ -491,11 +506,11 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 			elem.parents('.masonry').imagesLoaded(executeMasonry);
 		}
 	};
-}).directive('ngReallyClick', [function() {
+}).directive('ngReallyClick', [function () {
 	return {
 		restrict: 'A',
-		link: function(scope, element, attrs) {
-			element.bind('click', function() {
+		link: function (scope, element, attrs) {
+			element.bind('click', function () {
 				var message = attrs.ngReallyMessage;
 				if (message && confirm(message)) {
 					scope.$apply(attrs.ngReallyClick);
@@ -503,7 +518,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 			});
 		}
 	}
-}]).directive('uiSlider', [function(uiSliderConfig) {
+}]).directive('uiSlider', [function (uiSliderConfig) {
 	uiSliderConfig = {};
 	return {
 		require: 'ngModel',
@@ -525,7 +540,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 				var properties = ['min', 'max', 'step'];
 				var useDecimals = (!angular.isUndefined(attrs.useDecimals)) ? true : false;
 
-				var init = function() {
+				var init = function () {
 					// When ngModel is assigned an array of values then range is expected to be true.
 					// Warn user and change range to true else an error occurs when trying to drag handle
 					if (angular.isArray(ngModel.$viewValue) && options.range !== true) {
@@ -537,7 +552,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 					// This avoids init ordering issues where the slider's initial state (eg handle
 					// position) is calculated using widget defaults
 					// Note the properties take precedence over any duplicates in options
-					angular.forEach(properties, function(property) {
+					angular.forEach(properties, function (property) {
 						if (angular.isDefined(attrs[property])) {
 							options[property] = parseNumber(attrs[property], useDecimals);
 						}
@@ -548,9 +563,9 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 				};
 
 				// Find out if decimals are to be used for slider
-				angular.forEach(properties, function(property) {
+				angular.forEach(properties, function (property) {
 					// support {{}} and watch for updates
-					attrs.$observe(property, function(newVal) {
+					attrs.$observe(property, function (newVal) {
 						if (!!newVal) {
 							init();
 							elm.slider('option', property, parseNumber(newVal, useDecimals));
@@ -558,15 +573,15 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 						}
 					});
 				});
-				attrs.$observe('disabled', function(newVal) {
+				attrs.$observe('disabled', function (newVal) {
 					init();
 					elm.slider('option', 'disabled', !!newVal);
 				});
 
 				// Watch ui-slider (byVal) for changes and update
-				scope.$watch(attrs.uiSlider, function(newVal) {
+				scope.$watch(attrs.uiSlider, function (newVal) {
 					init();
-					if(newVal != undefined) {
+					if (newVal != undefined) {
 						elm.slider('option', newVal);
 					}
 				}, true);
@@ -575,13 +590,13 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 				setTimeout(init, 0);
 
 				// Update model value from slider
-				elm.bind('slide', function(event, ui) {
+				elm.bind('slide', function (event, ui) {
 					ngModel.$setViewValue(ui.values || ui.value);
 					scope.$apply();
 				});
 
 				// Update slider from model value
-				ngModel.$render = function() {
+				ngModel.$render = function () {
 					init();
 					var method = options.range === true ? 'values' : 'value';
 
@@ -589,7 +604,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 						ngModel.$viewValue = 0;
 					}
 					else if (options.range && !angular.isDefined(ngModel.$viewValue)) {
-						ngModel.$viewValue = [0,0];
+						ngModel.$viewValue = [0, 0];
 					}
 
 					// Do some sanity check of range values
@@ -621,7 +636,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 					elm.slider(method, ngModel.$viewValue);
 				};
 
-				scope.$watch(attrs.ngModel, function() {
+				scope.$watch(attrs.ngModel, function () {
 					if (options.range === true) {
 						ngModel.$render();
 					}
@@ -630,6 +645,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 				function destroy() {
 					elm.slider('destroy');
 				}
+
 				elm.bind('$destroy', destroy);
 			};
 		}
@@ -647,23 +663,33 @@ $( "#slider-range" ).slider({
 });
 $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) + " - $" + $(  "#slider-range" ).slider( "values", 1 ) );
 
-window.onscroll = function () {
-  var dynbar = $("#dynbar");
-  var arrow = $(".arrow");
-  var st = $(window).scrollTop();
-  var max = $('.parallax').height();
+function renderNavbar() {
+	var dynbar = $("#dynbar");
+	var arrow = $(".arrow");
+	var st = $(window).scrollTop();
+	var max = $('.parallax').height();
 
-  if (st > max - 100) {
-    dynbar.addClass("navbar-solid");
-  } else {
-    dynbar.removeClass("navbar-solid");
-  }
-  if (st > 20) {
-    arrow.css({'opacity' : 0});
-  } else {
-    arrow.css({'opacity' : 1});
-  }
+	if (st > max - 100) {
+		showNavbar(true);
+	} else {
+		showNavbar(false);
+	}
+	if (st > 20) {
+		arrow.css({'opacity': 0});
+	} else {
+		arrow.css({'opacity': 1});
+	}
 }
+
+function showNavbar(show) {
+	if (show) {
+		$("#dynbar").addClass("navbar-solid");
+	} else {
+		$("#dynbar").removeClass("navbar-solid");
+	}
+}
+
+window.onscroll = renderNavbar;
 
 /*
 $(window).load(function() {
@@ -1076,6 +1102,111 @@ angular.module('instrumentTypes').factory('InstrumentTypes', ['$resource',
 	}
 ]);
 
+'use strict';
+
+//Setting up route
+angular.module('searches').config(['$stateProvider',
+	function($stateProvider) {
+		// Searches state routing
+		$stateProvider.
+		state('listSearches', {
+			url: '/searches',
+			templateUrl: 'modules/searches/views/view-search.client.view.html'
+		}).
+		state('createSearch', {
+			url: '/searches/create',
+			templateUrl: 'modules/searches/views/create-search.client.view.html'
+		}).
+		state('viewSearch', {
+			url: '/searches/:searchId',
+			templateUrl: 'modules/searches/views/view-search.client.view.html'
+		}).
+		state('editSearch', {
+			url: '/searches/:searchId/edit',
+			templateUrl: 'modules/searches/views/edit-search.client.view.html'
+		});
+	}
+]);
+
+'use strict';
+
+// Searches controller
+angular.module('searches').controller('SearchesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Searches',
+	function($scope, $stateParams, $location, Authentication, Searches) {
+		$scope.authentication = Authentication;
+
+		// Create new Search
+		$scope.create = function() {
+			// Create new Search object
+			var search = new Searches ({
+				name: this.name
+			});
+
+			// Redirect after save
+			search.$save(function(response) {
+				$location.path('searches/' + response._id);
+
+				// Clear form fields
+				$scope.name = '';
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Remove existing Search
+		$scope.remove = function(search) {
+			if ( search ) { 
+				search.$remove();
+
+				for (var i in $scope.searches) {
+					if ($scope.searches [i] === search) {
+						$scope.searches.splice(i, 1);
+					}
+				}
+			} else {
+				$scope.search.$remove(function() {
+					$location.path('searches');
+				});
+			}
+		};
+
+		// Update existing Search
+		$scope.update = function() {
+			var search = $scope.search;
+
+			search.$update(function() {
+				$location.path('searches/' + search._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Find a list of Searches
+		$scope.find = function() {
+			$scope.searches = Searches.query();
+		};
+
+		// Find existing Search
+		$scope.findOne = function() {
+			$scope.search = Searches.get({ 
+				searchId: $stateParams.searchId
+			});
+		};
+	}
+]);
+'use strict';
+
+//Searches service used to communicate Searches REST endpoints
+angular.module('searches').factory('Searches', ['$resource',
+	function($resource) {
+		return $resource('searches/:searchId', { searchId: '@_id'
+		}, {
+			update: {
+				method: 'PUT'
+			}
+		});
+	}
+]);
 'use strict';
 
 // Configuring the Articles module

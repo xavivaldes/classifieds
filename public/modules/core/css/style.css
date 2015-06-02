@@ -102,3 +102,10 @@ body .navbar-toggle .icon-bar {
 .menu-spaced {
 	margin-top: 50px;
 }
+
+.container-fluid.ng-scope.fixed-top {
+	position: fixed;
+	top: 70px;
+	width: 100%;
+	z-index: 100;
+}
