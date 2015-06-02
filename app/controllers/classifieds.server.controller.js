@@ -90,11 +90,20 @@ exports.list = function (req, res) {
 	if (filter) {
 		if (filter.description && filter.description != '') filter.shortDescription = {$regex: new RegExp(filter.description)};
 		delete filter.description;
-		if (filter.prices) {
-			filter.price = {$lt: filter.prices[0], $gt: filter.prices[1]};
+		if (filter.minprice || filter.maxprice) {
+			var priceFilter = {};
+			if (filter.minprice) {
+				priceFilter.$gte = filter.minprice;
+				delete filter.minprice;
+			}
+			if (filter.maxprice) {
+				priceFilter.$lte = filter.maxprice;
+				delete filter.maxprice;
+			}
+			filter.price = priceFilter;
 		}
 	}
-
+	console.log(filter);
 	Classified.find(filter).sort('-created').populate('user', 'displayName').exec(function (err, classifieds) {
 		if (err) {
 			return res.status(400).send({

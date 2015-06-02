@@ -6,13 +6,13 @@
 					<img src="modules/core/img/brand/logo-symbol-large.png" class="img-responsive center-block"/>
 				</div>
 			</div>
-			<form>
+			<form ng-submit="search()">
 				<div class="row">
 					<div class="col-md-3 col-sm-2 col-xs-12"></div>
 					<div class="col-md-6 col-sm-8 col-xs-12">
 						<div class="input-group">
-							<input type="text" class="form-control simple-search" id="exampleInputEmail1"
-								   placeholder="Piano Barcelona"/>
+							<input type="text" class="form-control simple-search" id="search-text"
+								   placeholder="Piano Barcelona" ng-model="filter.description"/>
                             <span class="input-group-btn">
                                 <button type="submit" class="btn btn-default btn-white">Busca</button>
                             </span>
@@ -27,18 +27,15 @@
 	</div>
 	<!--
     <div class="imgfoot">
-        <p>By NASA, ESA, M. Robberto (Space Telescope Science Institute/ESA) and the Hubble Space Telescope Orion
-            Treasury Project Team [Public domain], <a
-                    href="http://commons.wikimedia.org/wiki/File%3AOrion_Nebula_-_Hubble_2006_mosaic_18000.jpg">via
-                Wikimedia Commons</a></p>
+        <p>image comment</p>
     </div>
     -->
 </div>
-<div class="container" data-ng-controller="HomeController" data-ng-init="loadAdditionalInfo()">
+<div class="container-fluid" data-ng-controller="HomeController" data-ng-init="loadAdditionalInfo()">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="panel panel-default">
-				<div class="panel-body">
+				<div class="panel-body center-block">
 					<form class="form-inline" ng-submit="search()">
 						<div class="form-group">
 							<label class="sr-only" for="description">Descripción</label>
@@ -52,8 +49,6 @@
 								<option value="" selected>Todas las categorías</option>
 							</select>
 						</div>
-
-
 						<div class="form-group">
 							<label class="sr-only" for="family">Familia</label>
 
@@ -77,13 +72,12 @@
 						</div>
 
 						<div class="form-group">
-							<label class="sr-only" for="prices">Precio</label>
-
-							<div id="prices" class="ng-valid ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all ng-dirty"
-								 ng-model="filter.prices" step="5" max="5000" min="0"
-								 ui-slider="{range: true}"/>
-							<p ng-show="filter.prices">Precio entre {{filter.prices[0]}} y {{filter.prices[1]}}</p>
-							<p ng-show="!filter.prices">Precio no filtrado</p>
+							<label class="sr-only" for="min-price">Precio mínimo</label>
+							<input type="number" ng-model="filter.minprice" class="form-control input-sm" id="min-price" placeholder="Precio min.">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="max-price">Precio máximo</label>
+							<input type="number" ng-model="filter.maxprice" class="form-control input-sm" id="max-price" placeholder="Precio max.">
 						</div>
 						<button type="submit" class="btn btn-default">Busca</button>
 					</form>
