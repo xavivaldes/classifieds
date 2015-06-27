@@ -110,6 +110,9 @@ exports.list = function (req, res) {
 					message: errorHandler.getErrorMessage(err)
 				});
 			} else {
+				for (var i in classifieds) {
+					classifieds[i].pic = {};
+				}
 				res.jsonp(classifieds);
 			}
 		});
