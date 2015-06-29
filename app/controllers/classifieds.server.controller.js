@@ -13,13 +13,9 @@ var mongoose = require('mongoose'),
  * Create a Classified
  */
 exports.create = function (req, res) {
-	var jsonClassified = JSON.parse(req.body.data).classified;
-	var classified = new Classified(jsonClassified);
+	var classified = new Classified(req.body);
 
 	classified.user = req.user;
-	var buffer = new Buffer(fs.readFileSync(req.files.file.path));
-	classified.pic.data = buffer.toString('base64');
-	classified.pic.contentType = req.files.file.type;
 
 	classified.save(function (err) {
 		if (err) {
@@ -41,8 +37,8 @@ exports.read = function (req, res) {
 };
 
 exports.readPic = function (req, res) {
-	res.contentType(req.classified.pic.contentType.toString());
-	var buf = new Buffer(req.classified.pic.data.toString(), 'base64');
+	res.contentType('image/png');
+	var buf = new Buffer(req.classified.pics.toString().split(';base64,')[1], 'base64');
 	res.send(buf);
 };
 
@@ -111,7 +107,7 @@ exports.list = function (req, res) {
 				});
 			} else {
 				for (var i in classifieds) {
-					classifieds[i].pic = {};
+					classifieds[i].pics = [];
 				}
 				res.jsonp(classifieds);
 			}

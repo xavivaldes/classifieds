@@ -4,7 +4,7 @@
 			<div class="col-md-6">
 				<div class="box-shadow">
 					<img class="img-rounded img-responsive"
-						 src="data:{{classified.pic.contentType}};base64,{{classified.pic.data}}"/>
+						 ng-src="{{classified.pics[0]}}"/>
 				</div>
 			</div>
 			<div class="col-md-6">
@@ -20,6 +20,11 @@
 							<p data-ng-bind="classified.longDescription"></p>
 						</div>
 						<div>
+							<label>Categoría</label>
+
+							<p data-ng-bind="classified.category.name"></p>
+						</div>
+						<div>
 							<label>Familia</label>
 
 							<p data-ng-bind="classified.family.name"></p>
@@ -28,11 +33,6 @@
 							<label>Tipo de instrumento</label>
 
 							<p data-ng-bind="classified.instrumentType.name"></p>
-						</div>
-						<div>
-							<label>Categoría</label>
-
-							<p data-ng-bind="classified.category.name"></p>
 						</div>
 						<div>
 							<label>Usuario</label>

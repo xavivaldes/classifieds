@@ -50,6 +50,11 @@ ApplicationConfiguration.registerModule('categories');
 
 // Use applicaion configuration module to register a new module
 ApplicationConfiguration.registerModule('classifieds');
+
+function removeElement(parentId, elementId) {
+	document.getElementById(parentId).removeChild(elementId);
+}
+
 'use strict';
 
 // Use Application configuration module to register a new module
@@ -231,120 +236,109 @@ angular.module('classifieds').config(['$stateProvider',
 'use strict';
 
 // Classifieds controller
-angular.module('classifieds').controller('ClassifiedsController', ['$scope', '$upload', '$stateParams', '$location', 'Authentication', 'Classifieds', 'Categories', 'Families', 'InstrumentTypes',
-    function ($scope, $upload, $stateParams, $location, Authentication, Classifieds, Categories, Families, InstrumentTypes) {
-        $scope.authentication = Authentication;
+angular.module('classifieds').controller('ClassifiedsController', ['$q', '$scope', '$upload', '$stateParams', '$location', 'Authentication', 'Classifieds', 'Categories', 'Families', 'InstrumentTypes',
+	function ($q, $scope, $upload, $stateParams, $location, Authentication, Classifieds, Categories, Families, InstrumentTypes) {
+		$scope.authentication = Authentication;
+		$scope.images = [];
 
-        $scope.sendClassified = function (classified, callback) {
-            var file = $scope.files[0];
-            console.log(file);
-            $scope.upload = $upload.upload({
-                url: 'classifieds',
-                data: {classified: classified},
-                file: file // or list of files ($files) for html5 only
-            }).success(function (data) {
-                console.log(data);
-                callback(data);
-            });
-        };
+		// Create new Classified
+		$scope.create = function () {
+			// Create new Classified object
+			var classified = new Classifieds({
+				shortDescription: this.shortDescription,
+				longDescription: this.longDescription,
+				price: this.price,
+				category: this.category,
+				family: this.family,
+				instrumentType: this.instrumentType,
+				pics: $scope.images
+			});
 
-        // Create new Classified
-        $scope.create = function () {
-            // Create new Classified object
-            var classified = new Classifieds({
-                shortDescription: this.shortDescription,
-                longDescription: this.longDescription,
-                price: this.price,
-                category: this.category,
-                family: this.family,
-                instrumentType: this.instrumentType,
-                pics: this.pics,
-                files: this.files
-            });
+			classified.$save(function(response) {
+				$location.path('classifieds/' + response._id);
 
-            $scope.sendClassified(classified, function (response) {
+				// Clear form fields
+				$scope.name = '';
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
 
-                $location.path('classifieds/' + response._id);
+		// Remove existing Classified
+		$scope.remove = function (classified) {
+			if (classified) {
+				classified.$remove();
 
-                // Clear form fields
-                $scope.name = '';
-            }, function (errorResponse) {
-                $scope.error = errorResponse.data.message;
-            });
-        };
-
-        // Remove existing Classified
-        $scope.remove = function (classified) {
-            if (classified) {
-                classified.$remove();
-
-                for (var i in $scope.classifieds) {
-                    if ($scope.classifieds [i] === classified) {
-                        $scope.classifieds.splice(i, 1);
-                    }
-                }
-            } else {
-                $scope.classified.$remove(function () {
-                    $location.path('classifieds');
-                });
-            }
-        };
-
-        // Update existing Classified
-        $scope.update = function () {
-            var classified = $scope.classified;
-
-            classified.$update(function () {
-                $location.path('classifieds/' + classified._id);
-            }, function (errorResponse) {
-                $scope.error = errorResponse.data.message;
-            });
-        };
-
-        // Find a list of Classifieds
-        $scope.find = function () {
-            $scope.classifieds = Classifieds.query();
-        };
-
-        $scope.loadAdditionalInfo = function () {
-            $scope.categories = Categories.query();
-            $scope.families = Families.query();
-        };
-
-        // Find existing Classified
-        $scope.findOne = function () {
-            $scope.classified = Classifieds.get({
-                classifiedId: $stateParams.classifiedId
-            });
-			$scope.loadAdditionalInfo();
-        };
-
-		$scope.$watch('classified.pic', function () {
-			if ($scope.classified.pic && document.getElementById('image-preview')) {
-				document.getElementById('image-preview').innerHTML = '<img class="img-responsive" src="data:' + $scope.classified.pic.contentType + ';base64,' + $scope.classified.pic.data + '"/>';
+				for (var i in $scope.classifieds) {
+					if ($scope.classifieds [i] === classified) {
+						$scope.classifieds.splice(i, 1);
+					}
+				}
+			} else {
+				$scope.classified.$remove(function () {
+					$location.path('classifieds');
+				});
 			}
-		});
+		};
 
-        $scope.$watch('family', function (newVal) {
-            if (newVal) $scope.instrumentTypes = InstrumentTypes.query({family: newVal});
-        });
+		// Update existing Classified
+		$scope.update = function () {
+			var classified = $scope.classified;
+
+			classified.$update(function () {
+				$location.path('classifieds/' + classified._id);
+			}, function (errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Find a list of Classifieds
+		$scope.find = function () {
+			$scope.classifieds = Classifieds.query();
+		};
+
+		$scope.loadAdditionalInfo = function () {
+			$scope.categories = Categories.query();
+			$scope.families = Families.query();
+		};
+
+		// Find existing Classified
+		$scope.findOne = function () {
+			$scope.classified = Classifieds.get({
+				classifiedId: $stateParams.classifiedId
+			});
+			$scope.loadAdditionalInfo();
+		};
+
+		/*
+		 $scope.$watch('classified.pic', function () {
+		 if ($scope.classified.pic && document.getElementById('image-preview')) {
+		 document.getElementById('image-preview').innerHTML = '<img class="img-responsive" src="data:' + $scope.classified.pic.contentType + ';base64,' + $scope.classified.pic.data + '"/>';
+		 }
+		 });
+		 */
+
+		$scope.$watch('family', function (newVal) {
+			if (newVal) $scope.instrumentTypes = InstrumentTypes.query({family: newVal});
+		});
 
 		$scope.$watch('classified.family', function (newVal) {
 			if (newVal) $scope.instrumentTypes = InstrumentTypes.query({family: newVal});
 		});
 
-        $scope.$watch('files', function () {
-            if ($scope.files && $scope.files.length > 0) {
-                var fileReader = new FileReader();
+		$scope.$watch('files', function () {
+			if ($scope.files && $scope.files.length > 0) {
 
-                fileReader.onload = function (fileLoadedEvent) {
-                    console.log(fileLoadedEvent.target.result);
-                    document.getElementById('image-preview').innerHTML = '<img class="img-responsive" src="' + fileLoadedEvent.target.result + '"/>';
-                };
-                fileReader.readAsDataURL($scope.files[0]);
-            }
-        });
-    }
+				for (var i in $scope.files) {
+					new ImageResizer().resize($scope.files[i], function (imageUrl) {
+						//$scope.images.push(imageUrl);
+						$scope.images[0] = imageUrl;
+						$scope.$apply();
+					});
+				}
+			}
+		});
+	}
 ]);
 
 'use strict';
@@ -671,6 +665,74 @@ $( "#slider-range" ).slider({
 	}
 });
 $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) + " - $" + $(  "#slider-range" ).slider( "values", 1 ) );
+
+function ImageResizer(maxWidth, maxHeight) {
+	this.maxWidth = maxWidth || 555;
+	this.maxHeight = maxHeight || 555;
+
+	this.createImage = function (url, callback) {
+		var image = new Image();
+		image.onload = function () {
+			callback(image);
+		};
+		image.src = url;
+	};
+
+	this.changeImage = function (origImage, callback) {
+		resizeArea = document.createElement('canvas');
+		resizeArea.style.visibility = 'hidden';
+
+		var ctx = resizeArea.getContext("2d");
+
+		var maxWidth = this.maxWidth;
+		var maxHeight = this.maxHeight;
+
+		this.createImage(origImage.url, function (image) {
+			var height = image.height;
+			var width = image.width;
+
+			// calculate the width and height, constraining the proportions
+			if (width > height) {
+				if (width > maxWidth) {
+					height = Math.round(height * maxWidth / width);
+					width = maxWidth;
+				}
+			} else {
+				if (height > maxHeight) {
+					width = Math.round(width * maxHeight / height);
+					height = maxHeight;
+				}
+			}
+
+			resizeArea.width = width;
+			resizeArea.height = height;
+
+			ctx.drawImage(image, 0, 0, width, height);
+			callback(resizeArea.toDataURL('image/png', 0.7));
+		});
+	};
+
+	this.resize = function (file, callback) {
+		var fileReader = new FileReader();
+
+		var imageResult = {
+			file: file,
+			url: URL.createObjectURL(file)
+		};
+
+		var resizer = this;
+
+		fileReader.onload = function (fileLoadedEvent) {
+			var deferred = new $.Deferred();
+			deferred.resolve(fileLoadedEvent.target.result);
+			deferred.promise().then(function (imgUrl) {
+				imageResult.dataURL = imgUrl;
+				resizer.changeImage(imageResult, callback);
+			});
+		};
+		fileReader.readAsDataURL(file);
+	};
+}
 
 function renderNavbar() {
 	var dynbar = $("#dynbar");

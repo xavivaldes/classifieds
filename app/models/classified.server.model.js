@@ -41,14 +41,7 @@ var ClassifiedSchema = new Schema({
         ref: 'InstrumentType',
         required: 'Escoje un tipo de instrumento'
     },
-    pic: {
-        data: {
-            Type: String
-        },
-        contentType: {
-            Type: String
-        }
-    },
+    pics: [String],
     views: {
         type: Number,
         default: 0
